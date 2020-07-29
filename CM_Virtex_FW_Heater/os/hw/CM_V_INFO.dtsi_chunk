@@ -1,0 +1,7 @@
+  amba_pl {
+    axiSlaveCM_V_INFO: CM_V_INFO@83D43000 {
+      compatible = "generic-uio";
+      reg = <0x83D43000 0x1000>;
+      label = "CM_V_INFO";
+    };
+  };

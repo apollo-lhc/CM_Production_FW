@@ -1,0 +1,7 @@
+  amba_pl {
+    axiSlaveIPBUS_VIRTEX: IPBUS_VIRTEX@8C000000 {
+      compatible = "generic-uio";
+      reg = <0x8C000000 0x2000000>;
+      label = "IPBUS_VIRTEX";
+    };
+  };

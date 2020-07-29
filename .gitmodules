@@ -1,0 +1,3 @@
+[submodule "CM_Common_FW"]
+	path = CM_Common_FW
+	url = https://github.com/apollo-lhc/CM_Common_FW.git

@@ -1,0 +1,7 @@
+  amba_pl {
+    axiSlaveVIRTEX_TCDS_DRP: VIRTEX_TCDS_DRP@83D40000 {
+      compatible = "generic-uio";
+      reg = <0x83D40000 0x1000>;
+      label = "VIRTEX_TCDS_DRP";
+    };
+  };

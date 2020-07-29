@@ -1,0 +1,7 @@
+  amba_pl {
+    axiSlaveVIRTEX_SYS_MGMT: VIRTEX_SYS_MGMT@83D42000 {
+      compatible = "generic-uio";
+      reg = <0x83D42000 0x1000>;
+      label = "VIRTEX_SYS_MGMT";
+    };
+  };
