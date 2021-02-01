@@ -14,6 +14,8 @@ entity top is
     -- clocks
     p_clk_200a : in  std_logic;
     n_clk_200a : in  std_logic;                -- 200 MHz system clock
+    p_clk_200b : in  std_logic;
+    n_clk_200b : in  std_logic;
 
     -- Zynq AXI Chip2Chip
     n_util_clk_chan0 : in std_logic;
@@ -35,7 +37,25 @@ entity top is
     p_ff1_recv0      : in  std_logic;
     n_ff1_recv0      : in  std_logic;
                                     
-    
+   p_clk0_chan3     : in std_logic;
+   n_clk0_chan3     : in std_logic;
+   p_clk1_chan3     : in std_logic;
+   n_clk1_chan3     : in std_logic;
+   
+   p_clk0_chan7     : in std_logic;
+   n_clk0_chan7     : in std_logic;
+   p_clk1_chan7     : in std_logic;
+   n_clk1_chan7     : in std_logic;
+
+   p_ff12_xmit      : out std_logic_vector(11 downto 0);
+   n_ff12_xmit      : out std_logic_vector(11 downto 0);
+   p_ff12_recv      : in  std_logic_vector(11 downto 0);
+   n_ff12_recv      : in  std_logic_vector(11 downto 0);
+   p_ff11_xmit      : out std_logic_vector(11 downto 0);
+   n_ff11_xmit      : out std_logic_vector(11 downto 0);
+   p_ff11_recv      : in  std_logic_vector(11 downto 0);
+   n_ff11_recv      : in  std_logic_vector(11 downto 0);
+                               
     -- tri-color LED
     led_red : out std_logic;
     led_green : out std_logic;
@@ -83,8 +103,8 @@ begin  -- architecture structure
       clk_axi   => AXI_CLK,
       reset     => '0',
       locked    => locked_clk200,
-      clk_in1_p => p_clk_200a,
-      clk_in1_n => n_clk_200a);
+      clk_in1_p => p_clk_200b,
+      clk_in1_n => n_clk_200b);
 
   led_blue  <= led_blue_local;
   led_red   <= led_red_local;
@@ -244,5 +264,135 @@ begin  -- architecture structure
       readMISO    => local_AXI_ReadMISO(2),
       writeMOSI   => local_AXI_WriteMOSI(2),
       writeMISO   => local_AXI_WriteMISO(2));
-  
+
+
+  IBERT: entity work.example_ibert_ultrascale_gty_0
+    port map (
+      gty_sysclkp_i => p_clk_200a,
+      gty_sysclkn_i => n_clk_200a,
+       
+      -- quad 131, 132, 133
+      gty_rxn_i(0) => n_ff12_recv(11),
+      gty_rxn_i(1) => n_ff12_recv(10),
+      gty_rxn_i(2) => n_ff12_recv(9),
+      gty_rxn_i(3) => n_ff12_recv(8),
+      gty_rxn_i(4) => n_ff12_recv(7),
+      gty_rxn_i(5) => n_ff12_recv(6),
+      gty_rxn_i(6) => n_ff12_recv(5),
+      gty_rxn_i(7) => n_ff12_recv(4),
+      gty_rxn_i(8) => n_ff12_recv(3),
+      gty_rxn_i(9) => n_ff12_recv(2),
+      gty_rxn_i(10) => n_ff12_recv(1),
+      gty_rxn_i(11) => n_ff12_recv(0),
+      
+      -- quad 231, 232, 233
+      gty_rxn_i(12) => n_ff11_recv(0),
+      gty_rxn_i(13) => n_ff11_recv(1),
+      gty_rxn_i(14) => n_ff11_recv(2),
+      gty_rxn_i(15) => n_ff11_recv(3),
+      gty_rxn_i(16) => n_ff11_recv(4),
+      gty_rxn_i(17) => n_ff11_recv(5),
+      gty_rxn_i(18) => n_ff11_recv(6),
+      gty_rxn_i(19) => n_ff11_recv(7),
+      gty_rxn_i(20) => n_ff11_recv(8),
+      gty_rxn_i(21) => n_ff11_recv(9),
+      gty_rxn_i(22) => n_ff11_recv(10),
+      gty_rxn_i(23) => n_ff11_recv(11),
+      
+      -- quad 131, 132, 133
+      gty_rxp_i(0) => p_ff12_recv(11),
+      gty_rxp_i(1) => p_ff12_recv(10),
+      gty_rxp_i(2) => p_ff12_recv(9),
+      gty_rxp_i(3) => p_ff12_recv(8),
+      gty_rxp_i(4) => p_ff12_recv(7),
+      gty_rxp_i(5) => p_ff12_recv(6),
+      gty_rxp_i(6) => p_ff12_recv(5),
+      gty_rxp_i(7) => p_ff12_recv(4),
+      gty_rxp_i(8) => p_ff12_recv(3),
+      gty_rxp_i(9) => p_ff12_recv(2),
+      gty_rxp_i(10) => p_ff12_recv(1),
+      gty_rxp_i(11) => p_ff12_recv(0),
+
+      -- quad 231, 232, 233
+      gty_rxp_i(12) => p_ff11_recv(0),
+      gty_rxp_i(13) => p_ff11_recv(1),
+      gty_rxp_i(14) => p_ff11_recv(2),
+      gty_rxp_i(15) => p_ff11_recv(3),
+      gty_rxp_i(16) => p_ff11_recv(4),
+      gty_rxp_i(17) => p_ff11_recv(5),
+      gty_rxp_i(18) => p_ff11_recv(6),
+      gty_rxp_i(19) => p_ff11_recv(7),
+      gty_rxp_i(20) => p_ff11_recv(8),
+      gty_rxp_i(21) => p_ff11_recv(9),
+      gty_rxp_i(22) => p_ff11_recv(10),
+      gty_rxp_i(23) => p_ff11_recv(11),
+      
+      gty_refclk0p_i(0) => p_clk0_chan7,
+      gty_refclk0p_i(1) => p_clk0_chan3,
+
+      gty_refclk0n_i(0) => n_clk0_chan7,
+      gty_refclk0n_i(1) => n_clk0_chan3,
+
+      gty_refclk1p_i(0) => p_clk1_chan7,
+      gty_refclk1p_i(1) => p_clk1_chan3,
+
+      gty_refclk1n_i(0) => n_clk1_chan7,
+      gty_refclk1n_i(1) => n_clk1_chan3,
+
+      -- quad 131, 132, 133
+      gty_txn_o(0) => n_ff12_xmit(11),
+      gty_txn_o(1) => n_ff12_xmit(10),
+      gty_txn_o(2) => n_ff12_xmit(9),
+      gty_txn_o(3) => n_ff12_xmit(8),
+      gty_txn_o(4) => n_ff12_xmit(7),
+      gty_txn_o(5) => n_ff12_xmit(6),
+      gty_txn_o(6) => n_ff12_xmit(5),
+      gty_txn_o(7) => n_ff12_xmit(4),
+      gty_txn_o(8) => n_ff12_xmit(3),
+      gty_txn_o(9) => n_ff12_xmit(2),
+      gty_txn_o(10) => n_ff12_xmit(1),
+      gty_txn_o(11) => n_ff12_xmit(0),
+
+      -- quad 231, 232, 233
+      gty_txn_o(12) => n_ff11_xmit(0),
+      gty_txn_o(13) => n_ff11_xmit(1),
+      gty_txn_o(14) => n_ff11_xmit(2),
+      gty_txn_o(15) => n_ff11_xmit(3),
+      gty_txn_o(16) => n_ff11_xmit(4),
+      gty_txn_o(17) => n_ff11_xmit(5),
+      gty_txn_o(18) => n_ff11_xmit(6),
+      gty_txn_o(19) => n_ff11_xmit(7),
+      gty_txn_o(20) => n_ff11_xmit(8),
+      gty_txn_o(21) => n_ff11_xmit(9),
+      gty_txn_o(22) => n_ff11_xmit(10),
+      gty_txn_o(23) => n_ff11_xmit(11),
+
+      -- quad 131, 132, 133
+      gty_txp_o(0) => p_ff12_xmit(11),
+      gty_txp_o(1) => p_ff12_xmit(10),
+      gty_txp_o(2) => p_ff12_xmit(9),
+      gty_txp_o(3) => p_ff12_xmit(8),
+      gty_txp_o(4) => p_ff12_xmit(7),
+      gty_txp_o(5) => p_ff12_xmit(6),
+      gty_txp_o(6) => p_ff12_xmit(5),
+      gty_txp_o(7) => p_ff12_xmit(4),
+      gty_txp_o(8) => p_ff12_xmit(3),
+      gty_txp_o(9) => p_ff12_xmit(2),
+      gty_txp_o(10) => p_ff12_xmit(1),
+      gty_txp_o(11) => p_ff12_xmit(0),
+      
+      -- quad 231, 232, 233
+      gty_txp_o(12) => p_ff11_xmit(0),
+      gty_txp_o(13) => p_ff11_xmit(1),
+      gty_txp_o(14) => p_ff11_xmit(2),
+      gty_txp_o(15) => p_ff11_xmit(3),
+      gty_txp_o(16) => p_ff11_xmit(4),
+      gty_txp_o(17) => p_ff11_xmit(5),
+      gty_txp_o(18) => p_ff11_xmit(6),
+      gty_txp_o(19) => p_ff11_xmit(7),
+      gty_txp_o(20) => p_ff11_xmit(8),
+      gty_txp_o(21) => p_ff11_xmit(9),
+      gty_txp_o(22) => p_ff11_xmit(10),
+      gty_txp_o(23) => p_ff11_xmit(11)
+      );
 end architecture structure;

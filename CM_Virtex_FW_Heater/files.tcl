@@ -8,7 +8,7 @@ set bd_files "\
 
 set vhdl_files "\
      ../CM_Common_FW/heater/lut_oscilator.vhd \
-     ../CM_Common_FW/heater/heater/heater.vhd \
+     ../CM_Common_FW/heater/heater.vhd \
      src/top.vhd \
      ../CM_Common_FW/misc/pass_time_domain.vhd \
      ../CM_Common_FW/misc/pacd.vhd \
@@ -24,6 +24,7 @@ set vhdl_files "\
      src/TCDS/VIRTEX_TCDS_map.vhd \
      src/TCDS/VIRTEX_TCDS_PKG.vhd \               
      src/TCDS/TCDS.vhd \
+     src/example_ibert_ultrascale_gty_0.vhd \
      "
 
 set verilog_files "\                                                                                                                                                                                              
@@ -36,12 +37,15 @@ set xdc_files "\
     src/top_pins.xdc \
     src/top_timing.xdc	\
     src/power.xdc \
+    src/example_ibert_ultrascale_gty_0.xdc \
+    src/ibert_ultrascale_gty_ip_example.xdc \
     "	    
 
 set xci_files "\
               cores/Local_Clocking/Local_Clocking.xci \
-              cores/in_system_ibert_0/in_system_ibert_0.xci \
               cores/TCDS_TxRx/TCDS_TxRx.xci  \                             
+              cores/AXI_DRP/AXI_DRP.xci \
+              cores/ibert_ultrascale_gty_0/ibert_ultrascale_gty_0.xci \
               "
 
 #DRP ip
