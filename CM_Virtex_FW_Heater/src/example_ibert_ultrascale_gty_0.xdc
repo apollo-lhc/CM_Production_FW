@@ -25,31 +25,40 @@ set_property C_CLK_INPUT_FREQ_HZ 200000000 [get_debug_cores dbg_hub]
 set_property C_ENABLE_CLK_DIVIDER true [get_debug_cores dbg_hub]
 set_property C_USER_SCAN_CHAIN 1 [get_debug_cores dbg_hub]
 #connect_debug_port dbg_hub/clk [get_nets clk]
-
-##
-##gtrefclk lock constraints
-##
-# set_property PACKAGE_PIN R36 [get_ports gty_refclk0p_i[0]] */
-# set_property PACKAGE_PIN R37 [get_ports gty_refclk0n_i[0]] */
-# set_property PACKAGE_PIN N36 [get_ports gty_refclk1p_i[0]] */
-# set_property PACKAGE_PIN N37 [get_ports gty_refclk1n_i[0]] */
-# set_property PACKAGE_PIN H11 [get_ports gty_refclk0p_i[1]] */
-# set_property PACKAGE_PIN H10 [get_ports gty_refclk0n_i[1]] */
-# set_property PACKAGE_PIN F11 [get_ports gty_refclk1p_i[1]] */
-# set_property PACKAGE_PIN F10 [get_ports gty_refclk1n_i[1]] */
 ##
 ## Refclk constraints
 ##
+#create_clock -name gtrefclk0_1 -period 5.0 [get_ports p_util_clk_chan1]
+#set_clock_groups -group [get_clocks gtrefclk0_1 -include_generated_clocks] -asynchronous
+create_clock -name gtrefclk0_2 -period 3.2 [get_ports p_clk0_chan4]
+#create_clock -name gtrefclk1_2 -period 3.2 [get_ports p_clk1_chan4]
+set_clock_groups -group [get_clocks gtrefclk0_2 -include_generated_clocks] -asynchronous
+#set_clock_groups -group [get_clocks gtrefclk1_2 -include_generated_clocks] -asynchronous
+create_clock -name gtrefclk0_4 -period 3.2 [get_ports p_clk0_chan5]
+#create_clock -name gtrefclk1_4 -period 3.2 [get_ports p_clk1_chan5]
+set_clock_groups -group [get_clocks gtrefclk0_4 -include_generated_clocks] -asynchronous
+#set_clock_groups -group [get_clocks gtrefclk1_4 -include_generated_clocks] -asynchronous
+create_clock -name gtrefclk0_6 -period 3.2 [get_ports p_clk0_chan6]
+#create_clock -name gtrefclk1_6 -period 3.2 [get_ports p_clk1_chan6]
+set_clock_groups -group [get_clocks gtrefclk0_6 -include_generated_clocks] -asynchronous
+#set_clock_groups -group [get_clocks gtrefclk1_6 -include_generated_clocks] -asynchronous
 create_clock -name gtrefclk0_8 -period 3.2 [get_ports p_clk0_chan7]
-create_clock -name gtrefclk1_8 -period 3.2 [get_ports p_clk1_chan7]
+#create_clock -name gtrefclk1_8 -period 3.2 [get_ports p_clk1_chan7]
 set_clock_groups -group [get_clocks gtrefclk0_8 -include_generated_clocks] -asynchronous
-set_clock_groups -group [get_clocks gtrefclk1_8 -include_generated_clocks] -asynchronous
+#set_clock_groups -group [get_clocks gtrefclk1_8 -include_generated_clocks] -asynchronous
+create_clock -name gtrefclk0_11 -period 3.2 [get_ports p_clk0_chan0]
+#create_clock -name gtrefclk1_11 -period 3.2 [get_ports p_clk1_chan0]
+set_clock_groups -group [get_clocks gtrefclk0_11 -include_generated_clocks] -asynchronous
+#set_clock_groups -group [get_clocks gtrefclk1_11 -include_generated_clocks] -asynchronous
+create_clock -name gtrefclk0_13 -period 3.2 [get_ports p_clk0_chan1]
+#create_clock -name gtrefclk1_13 -period 3.2 [get_ports p_clk1_chan1]
+set_clock_groups -group [get_clocks gtrefclk0_13 -include_generated_clocks] -asynchronous
+#set_clock_groups -group [get_clocks gtrefclk1_13 -include_generated_clocks] -asynchronous
+create_clock -name gtrefclk0_16 -period 3.2 [get_ports p_clk0_chan2]
+#create_clock -name gtrefclk1_16 -period 3.2 [get_ports p_clk1_chan2]
+set_clock_groups -group [get_clocks gtrefclk0_16 -include_generated_clocks] -asynchronous
+#set_clock_groups -group [get_clocks gtrefclk1_16 -include_generated_clocks] -asynchronous
 create_clock -name gtrefclk0_18 -period 3.2 [get_ports p_clk0_chan3]
-create_clock -name gtrefclk1_18 -period 3.2 [get_ports p_clk1_chan3]
+#create_clock -name gtrefclk1_18 -period 3.2 [get_ports p_clk1_chan3]
 set_clock_groups -group [get_clocks gtrefclk0_18 -include_generated_clocks] -asynchronous
-set_clock_groups -group [get_clocks gtrefclk1_18 -include_generated_clocks] -asynchronous
-##
-## System clock pin locs and timing constraints
-##
-# set_property PACKAGE_PIN BA35 [get_ports gty_sysclkp_i] */
-# set_property IOSTANDARD LVDS [get_ports gty_sysclkp_i] */
+#set_clock_groups -group [get_clocks gtrefclk1_18 -include_generated_clocks] -asynchronous

@@ -27,15 +27,15 @@ use UNISIM.vcomponents.all;
 entity example_ibert_ultrascale_gty_0 is
   generic
   (
-    C_NUM_GTY_QUADS                   : integer              := 6;
-    C_GTY_REFCLKS_USED                     : integer              :=2
+    C_NUM_GTY_QUADS                   : integer              := 17;
+    C_GTY_REFCLKS_USED                     : integer              :=8
     );
   port
     (
       gty_refclk0p_i  : in std_logic_vector(C_GTY_REFCLKS_USED-1 downto 0);
       gty_refclk0n_i  : in std_logic_vector(C_GTY_REFCLKS_USED-1 downto 0);
-      gty_refclk1p_i  : in std_logic_vector(C_GTY_REFCLKS_USED-1 downto 0);
-      gty_refclk1n_i  : in std_logic_vector(C_GTY_REFCLKS_USED-1 downto 0);
+--      gty_refclk1p_i  : in std_logic_vector(C_GTY_REFCLKS_USED-1 downto 0);
+--      gty_refclk1n_i  : in std_logic_vector(C_GTY_REFCLKS_USED-1 downto 0);
       gty_sysclkp_i : in std_logic;
       gty_sysclkn_i : in std_logic;
       gty_rxn_i       : in std_logic_vector(4*C_NUM_GTY_QUADS-1 downto 0);
@@ -74,6 +74,8 @@ architecture proc of example_ibert_ultrascale_gty_0 is
    signal  gty_odiv2_1_i :std_logic_vector(C_GTY_REFCLKS_USED-1 downto 0);
    signal                           gty_sysclk_i: std_logic;
 begin
+
+  
   --
   -- Sysclock IBUFDS instantiation
   --
@@ -85,32 +87,51 @@ begin
       IB => gty_sysclkn_i,
       O => gty_sysclk_i
       );
-    
+
+
   --
   -- Refclk IBUFDS instantiations
   --
 
 
-   u_buf_q8_clk0 :IBUFDS_GTE4
+  --u_buf_q1_clk0 :IBUFDS_GTE4
+  --  port map(
+  --    O => gty_refclk0_i(0),
+  --    ODIV2 => gty_odiv2_0_i(0),
+  --    CEB => '0',
+  --    I => gty_refclk0p_i(0),
+  --    IB => gty_refclk0n_i(0)
+  --    );
+
+  --u_buf_q1_clk1 :IBUFDS_GTE4
+  --  port map(
+  --    O => gty_refclk1_i(0),
+  --    ODIV2 => gty_odiv2_1_i(0),
+  --    CEB => '0',
+  --    I => gty_refclk1p_i(0),
+  --    IB => gty_refclk1n_i(0)
+  --    );
+  
+
+  u_buf_q2_clk0 :IBUFDS_GTE4 
      port map(
        O => gty_refclk0_i(0),
        ODIV2 => gty_odiv2_0_i(0),
        CEB => '0',
        I => gty_refclk0p_i(0),
        IB => gty_refclk0n_i(0)
-       );
+      );
 
-   u_buf_q8_clk1 :IBUFDS_GTE4
-     port map(
-       O => gty_refclk1_i(0),
-       ODIV2 => gty_odiv2_1_i(0),
-       CEB => '0',
-       I => gty_refclk1p_i(0),
-       IB => gty_refclk1n_i(0)
-       );
+   --u_buf_q2_clk1 :IBUFDS_GTE4
+   --  port map(
+   --    O => gty_refclk1_i(0),
+   --    ODIV2 => gty_odiv2_1_i(0),
+   --    CEB => '0',
+   --    I => gty_refclk1p_i(0),
+   --    IB => gty_refclk1n_i(0)
+   --    );
 
-
-   u_buf_q17_clk0 :IBUFDS_GTE4
+   u_buf_q4_clk0 :IBUFDS_GTE4
      port map(
        O => gty_refclk0_i(1),
        ODIV2 => gty_odiv2_0_i(1),
@@ -119,85 +140,214 @@ begin
        IB => gty_refclk0n_i(1)
        );
 
-   u_buf_q17_clk1 :IBUFDS_GTE4
+
+  --u_buf_q4_clk1 :IBUFDS_GTE4
+  --   port map(
+  --     O => gty_refclk1_i(1),
+  --     ODIV2 => gty_odiv2_1_i(1),
+  --     CEB => '0',
+  --     I => gty_refclk1p_i(1),
+  --     IB => gty_refclk1n_i(1)
+  --     );
+   
+   u_buf_q6_clk0 :IBUFDS_GTE4
      port map(
-       O => gty_refclk1_i(1),
-       ODIV2 => gty_odiv2_1_i(1),
+       O => gty_refclk0_i(2),
+       ODIV2 => gty_odiv2_0_i(2),
        CEB => '0',
-       I => gty_refclk1p_i(1),
-       IB => gty_refclk1n_i(1)
+       I => gty_refclk0p_i(2),
+       IB => gty_refclk0n_i(2)
        );
+
+   --u_buf_q6_clk1 :IBUFDS_GTE4
+   --  port map(
+   --    O => gty_refclk1_i(2),
+   --    ODIV2 => gty_odiv2_1_i(2),
+   --    CEB => '0',
+   --    I => gty_refclk1p_i(2),
+   --    IB => gty_refclk1n_i(2)
+   --    );
+
+   u_buf_q8_clk0 :IBUFDS_GTE4
+     port map(
+       O => gty_refclk0_i(3),
+       ODIV2 => gty_odiv2_0_i(3),
+       CEB => '0',
+       I => gty_refclk0p_i(3),
+       IB => gty_refclk0n_i(3)
+       );
+
+   --u_buf_q8_clk1 :IBUFDS_GTE4
+   --  port map(
+   --    O => gty_refclk1_i(3),
+   --    ODIV2 => gty_odiv2_1_i(3),
+   --    CEB => '0',
+   --    I => gty_refclk1p_i(3),
+   --    IB => gty_refclk1n_i(3)
+   --    );
+
+   u_buf_q11_clk0 :IBUFDS_GTE4
+     port map(
+       O => gty_refclk0_i(4),
+       ODIV2 => gty_odiv2_0_i(4),
+       CEB => '0',
+       I => gty_refclk0p_i(4),
+       IB => gty_refclk0n_i(4)
+       );
+   
+   --u_buf_q11_clk1 :IBUFDS_GTE4
+   --  port map(
+   --    O => gty_refclk1_i(4),
+   --    ODIV2 => gty_odiv2_1_i(4),
+   --    CEB => '0',
+   --    I => gty_refclk1p_i(4),
+   --    IB => gty_refclk1n_i(4)
+   --    );
+
+   u_buf_q13_clk0 :IBUFDS_GTE4
+     port map(
+       O => gty_refclk0_i(5),
+       ODIV2 => gty_odiv2_0_i(5),
+       CEB => '0',
+       I => gty_refclk0p_i(5),
+       IB => gty_refclk0n_i(5)
+       );
+   
+   --u_buf_q13_clk1 :IBUFDS_GTE4
+   --  port map(
+   --    O => gty_refclk1_i(5),
+   --    ODIV2 => gty_odiv2_1_i(5),
+   --    CEB => '0',
+   --    I => gty_refclk1p_i(5),
+   --    IB => gty_refclk1n_i(5)
+   --    );
+   
+   u_buf_q16_clk0 :IBUFDS_GTE4
+    port map(
+      O => gty_refclk0_i(6),
+      ODIV2 => gty_odiv2_0_i(6),
+      CEB => '0',
+      I => gty_refclk0p_i(6),
+      IB => gty_refclk0n_i(6)
+      );
+
+   --u_buf_q16_clk1 :IBUFDS_GTE4
+   --  port map(
+   --    O => gty_refclk1_i(6),
+   --    ODIV2 => gty_odiv2_1_i(6),
+   --    CEB => '0',
+   --    I => gty_refclk1p_i(6),
+   --    IB => gty_refclk1n_i(6)
+   --    );
+
+   u_buf_q17_clk0 :IBUFDS_GTE4
+     port map(
+       O => gty_refclk0_i(7),
+       ODIV2 => gty_odiv2_0_i(7),
+       CEB => '0',
+       I => gty_refclk0p_i(7),
+       IB => gty_refclk0n_i(7)
+       );
+
+   --u_buf_q17_clk1 :IBUFDS_GTE4
+   --  port map(
+   --    O => gty_refclk1_i(7),
+   --    ODIV2 => gty_odiv2_1_i(7),
+   --    CEB => '0',
+   --    I => gty_refclk1p_i(7),
+   --    IB => gty_refclk1n_i(7)
+   --    );
 
   --
   -- Refclk connection from each IBUFDS to respective quads depending on the source selected in gui
   --
-  gty_qrefclk0_i(0) <= '0';
-  gty_qrefclk1_i(0) <= '0';
+--  gty_qrefclk0_i(0) <= gty_refclk0_i(0);
+--  gty_qrefclk1_i(0) <= '0'; --gty_refclk1_i(0);
+--  gty_qnorthrefclk0_i(0) <= '0';
+--  gty_qnorthrefclk1_i(0) <= '0';
+--  gty_qsouthrefclk0_i(0) <= '0';
+--  gty_qsouthrefclk1_i(0) <= '0';
+----GTYE4_COMMON clock connection
+--  gty_qrefclk00_i(0) <= gty_refclk0_i(0);
+--  gty_qrefclk10_i(0) <= '0'; --gty_refclk1_i(0);
+--  gty_qrefclk01_i(0) <= '0';
+--  gty_qrefclk11_i(0) <= '0';  
+--  gty_qnorthrefclk00_i(0) <= '0';
+--  gty_qnorthrefclk10_i(0) <= '0';
+--  gty_qnorthrefclk01_i(0) <= '0';
+--  gty_qnorthrefclk11_i(0) <= '0';  
+--  gty_qsouthrefclk00_i(0) <= '0';
+--  gty_qsouthrefclk10_i(0) <= '0';  
+--  gty_qsouthrefclk01_i(0) <= '0';
+--  gty_qsouthrefclk11_i(0) <= '0'; 
+
+  gty_qrefclk0_i(0) <= gty_refclk0_i(0);
+  gty_qrefclk1_i(0) <= '0'; --gty_refclk1_i(0);
   gty_qnorthrefclk0_i(0) <= '0';
   gty_qnorthrefclk1_i(0) <= '0';
-  gty_qsouthrefclk0_i(0) <= gty_refclk0_i(0);
+  gty_qsouthrefclk0_i(0) <= '0';
   gty_qsouthrefclk1_i(0) <= '0';
---GTYE4_COMMON clock connection
-  gty_qrefclk00_i(0) <= '0';
-  gty_qrefclk10_i(0) <= '0';
+  --GTYE4_COMMON clock connection
+  gty_qrefclk00_i(0) <= gty_refclk0_i(0);
+  gty_qrefclk10_i(0) <= '0'; --gty_refclk1_i(0);
   gty_qrefclk01_i(0) <= '0';
   gty_qrefclk11_i(0) <= '0';
   gty_qnorthrefclk00_i(0) <= '0';
   gty_qnorthrefclk10_i(0) <= '0';
   gty_qnorthrefclk01_i(0) <= '0';
   gty_qnorthrefclk11_i(0) <= '0';
-  gty_qsouthrefclk00_i(0) <= gty_refclk0_i(0);
+  gty_qsouthrefclk00_i(0) <= '0';
   gty_qsouthrefclk10_i(0) <= '0';
   gty_qsouthrefclk01_i(0) <= '0';
   gty_qsouthrefclk11_i(0) <= '0';
- 
-  gty_qrefclk0_i(1) <= gty_refclk0_i(0);
-  gty_qrefclk1_i(1) <= gty_refclk1_i(0);
-  gty_qnorthrefclk0_i(1) <= '0';
+  
+
+  gty_qrefclk0_i(1) <= '0';
+  gty_qrefclk1_i(1) <= '0';
+  gty_qnorthrefclk0_i(1) <= gty_refclk0_i(0);
   gty_qnorthrefclk1_i(1) <= '0';
   gty_qsouthrefclk0_i(1) <= '0';
   gty_qsouthrefclk1_i(1) <= '0';
 --GTYE4_COMMON clock connection
-  gty_qrefclk00_i(1) <= gty_refclk0_i(0);
-  gty_qrefclk10_i(1) <= gty_refclk1_i(0);
+  gty_qrefclk00_i(1) <= '0';
+  gty_qrefclk10_i(1) <= '0';
   gty_qrefclk01_i(1) <= '0';
-  gty_qrefclk11_i(1) <= '0';  
-  gty_qnorthrefclk00_i(1) <= '0';
+  gty_qrefclk11_i(1) <= '0';
+  gty_qnorthrefclk00_i(1) <= gty_refclk0_i(0);
   gty_qnorthrefclk10_i(1) <= '0';
   gty_qnorthrefclk01_i(1) <= '0';
-  gty_qnorthrefclk11_i(1) <= '0';  
+  gty_qnorthrefclk11_i(1) <= '0';
   gty_qsouthrefclk00_i(1) <= '0';
-  gty_qsouthrefclk10_i(1) <= '0';  
+  gty_qsouthrefclk10_i(1) <= '0';
   gty_qsouthrefclk01_i(1) <= '0';
-  gty_qsouthrefclk11_i(1) <= '0'; 
+  gty_qsouthrefclk11_i(1) <= '0';
  
-
-  gty_qrefclk0_i(2) <= '0';
-  gty_qrefclk1_i(2) <= '0';
-  gty_qnorthrefclk0_i(2) <= gty_refclk0_i(0);
+  gty_qrefclk0_i(2) <= gty_refclk0_i(1);
+  gty_qrefclk1_i(2) <= '0'; --gty_refclk1_i(1);
+  gty_qnorthrefclk0_i(2) <= '0';
   gty_qnorthrefclk1_i(2) <= '0';
   gty_qsouthrefclk0_i(2) <= '0';
   gty_qsouthrefclk1_i(2) <= '0';
 --GTYE4_COMMON clock connection
-  gty_qrefclk00_i(2) <= '0';
-  gty_qrefclk10_i(2) <= '0';
+  gty_qrefclk00_i(2) <= gty_refclk0_i(1);
+  gty_qrefclk10_i(2) <= '0'; --gty_refclk1_i(1);
   gty_qrefclk01_i(2) <= '0';
-  gty_qrefclk11_i(2) <= '0';
-  gty_qnorthrefclk00_i(2) <= gty_refclk0_i(0);
+  gty_qrefclk11_i(2) <= '0';  
+  gty_qnorthrefclk00_i(2) <= '0';
   gty_qnorthrefclk10_i(2) <= '0';
   gty_qnorthrefclk01_i(2) <= '0';
-  gty_qnorthrefclk11_i(2) <= '0';
+  gty_qnorthrefclk11_i(2) <= '0';  
   gty_qsouthrefclk00_i(2) <= '0';
-  gty_qsouthrefclk10_i(2) <= '0';
+  gty_qsouthrefclk10_i(2) <= '0';  
   gty_qsouthrefclk01_i(2) <= '0';
-  gty_qsouthrefclk11_i(2) <= '0';
-  
+  gty_qsouthrefclk11_i(2) <= '0'; 
+ 
 
   gty_qrefclk0_i(3) <= '0';
   gty_qrefclk1_i(3) <= '0';
   gty_qnorthrefclk0_i(3) <= '0';
   gty_qnorthrefclk1_i(3) <= '0';
-  gty_qsouthrefclk0_i(3) <= gty_refclk0_i(1);
+  gty_qsouthrefclk0_i(3) <= gty_refclk0_i(2);
   gty_qsouthrefclk1_i(3) <= '0';
 --GTYE4_COMMON clock connection
   gty_qrefclk00_i(3) <= '0';
@@ -208,20 +358,20 @@ begin
   gty_qnorthrefclk10_i(3) <= '0';
   gty_qnorthrefclk01_i(3) <= '0';
   gty_qnorthrefclk11_i(3) <= '0';
-  gty_qsouthrefclk00_i(3) <= gty_refclk0_i(1);
+  gty_qsouthrefclk00_i(3) <= gty_refclk0_i(2);
   gty_qsouthrefclk10_i(3) <= '0';
   gty_qsouthrefclk01_i(3) <= '0';
   gty_qsouthrefclk11_i(3) <= '0';
  
-  gty_qrefclk0_i(4) <= gty_refclk0_i(1);
-  gty_qrefclk1_i(4) <= gty_refclk1_i(1);
+  gty_qrefclk0_i(4) <= gty_refclk0_i(2);
+  gty_qrefclk1_i(4) <= '0'; --gty_refclk1_i(2);
   gty_qnorthrefclk0_i(4) <= '0';
   gty_qnorthrefclk1_i(4) <= '0';
   gty_qsouthrefclk0_i(4) <= '0';
   gty_qsouthrefclk1_i(4) <= '0';
 --GTYE4_COMMON clock connection
-  gty_qrefclk00_i(4) <= gty_refclk0_i(1);
-  gty_qrefclk10_i(4) <= gty_refclk1_i(1);
+  gty_qrefclk00_i(4) <= gty_refclk0_i(2);
+  gty_qrefclk10_i(4) <= '0'; --gty_refclk1_i(2);
   gty_qrefclk01_i(4) <= '0';
   gty_qrefclk11_i(4) <= '0';  
   gty_qnorthrefclk00_i(4) <= '0';
@@ -236,35 +386,269 @@ begin
 
   gty_qrefclk0_i(5) <= '0';
   gty_qrefclk1_i(5) <= '0';
-  gty_qnorthrefclk0_i(5) <= gty_refclk0_i(1);
+  gty_qnorthrefclk0_i(5) <= '0';
   gty_qnorthrefclk1_i(5) <= '0';
-  gty_qsouthrefclk0_i(5) <= '0';
+  gty_qsouthrefclk0_i(5) <= gty_refclk0_i(3);
   gty_qsouthrefclk1_i(5) <= '0';
 --GTYE4_COMMON clock connection
   gty_qrefclk00_i(5) <= '0';
   gty_qrefclk10_i(5) <= '0';
   gty_qrefclk01_i(5) <= '0';
   gty_qrefclk11_i(5) <= '0';
-  gty_qnorthrefclk00_i(5) <= gty_refclk0_i(1);
+  gty_qnorthrefclk00_i(5) <= '0';
   gty_qnorthrefclk10_i(5) <= '0';
   gty_qnorthrefclk01_i(5) <= '0';
   gty_qnorthrefclk11_i(5) <= '0';
-  gty_qsouthrefclk00_i(5) <= '0';
+  gty_qsouthrefclk00_i(5) <= gty_refclk0_i(3);
   gty_qsouthrefclk10_i(5) <= '0';
   gty_qsouthrefclk01_i(5) <= '0';
   gty_qsouthrefclk11_i(5) <= '0';
  
- --u_gty_sysclk_internal  : BUFG_GT
- --  port map   (
- --    I => gty_odiv2_0_i(1),
- --    O => gty_sysclk_i,
- --    CE => '1',
- --    CEMASK => '0',
- --    CLR => '0',
- --    CLRMASK => '0',
- --    DIV => "000"
- --    );
+  gty_qrefclk0_i(6) <= gty_refclk0_i(3);
+  gty_qrefclk1_i(6) <= '0'; --gty_refclk1_i(3);
+  gty_qnorthrefclk0_i(6) <= '0';
+  gty_qnorthrefclk1_i(6) <= '0';
+  gty_qsouthrefclk0_i(6) <= '0';
+  gty_qsouthrefclk1_i(6) <= '0';
+--GTYE4_COMMON clock connection
+  gty_qrefclk00_i(6) <= gty_refclk0_i(3);
+  gty_qrefclk10_i(6) <= '0'; --gty_refclk1_i(3);
+  gty_qrefclk01_i(6) <= '0';
+  gty_qrefclk11_i(6) <= '0';  
+  gty_qnorthrefclk00_i(6) <= '0';
+  gty_qnorthrefclk10_i(6) <= '0';
+  gty_qnorthrefclk01_i(6) <= '0';
+  gty_qnorthrefclk11_i(6) <= '0';  
+  gty_qsouthrefclk00_i(6) <= '0';
+  gty_qsouthrefclk10_i(6) <= '0';  
+  gty_qsouthrefclk01_i(6) <= '0';
+  gty_qsouthrefclk11_i(6) <= '0'; 
+ 
 
+  gty_qrefclk0_i(7) <= '0';
+  gty_qrefclk1_i(7) <= '0';
+  gty_qnorthrefclk0_i(7) <= gty_refclk0_i(3);
+  gty_qnorthrefclk1_i(7) <= '0';
+  gty_qsouthrefclk0_i(7) <= '0';
+  gty_qsouthrefclk1_i(7) <= '0';
+--GTYE4_COMMON clock connection
+  gty_qrefclk00_i(7) <= '0';
+  gty_qrefclk10_i(7) <= '0';
+  gty_qrefclk01_i(7) <= '0';
+  gty_qrefclk11_i(7) <= '0';
+  gty_qnorthrefclk00_i(7) <= gty_refclk0_i(3);
+  gty_qnorthrefclk10_i(7) <= '0';
+  gty_qnorthrefclk01_i(7) <= '0';
+  gty_qnorthrefclk11_i(7) <= '0';
+  gty_qsouthrefclk00_i(7) <= '0';
+  gty_qsouthrefclk10_i(7) <= '0';
+  gty_qsouthrefclk01_i(7) <= '0';
+  gty_qsouthrefclk11_i(7) <= '0';
+ 
+  gty_qrefclk0_i(8) <= gty_refclk0_i(4);
+  gty_qrefclk1_i(8) <= '0'; --gty_refclk1_i(4);
+  gty_qnorthrefclk0_i(8) <= '0';
+  gty_qnorthrefclk1_i(8) <= '0';
+  gty_qsouthrefclk0_i(8) <= '0';
+  gty_qsouthrefclk1_i(8) <= '0';
+--GTYE4_COMMON clock connection
+  gty_qrefclk00_i(8) <= gty_refclk0_i(4);
+  gty_qrefclk10_i(8) <= '0'; --gty_refclk1_i(4);
+  gty_qrefclk01_i(8) <= '0';
+  gty_qrefclk11_i(8) <= '0';  
+  gty_qnorthrefclk00_i(8) <= '0';
+  gty_qnorthrefclk10_i(8) <= '0';
+  gty_qnorthrefclk01_i(8) <= '0';
+  gty_qnorthrefclk11_i(8) <= '0';  
+  gty_qsouthrefclk00_i(8) <= '0';
+  gty_qsouthrefclk10_i(8) <= '0';  
+  gty_qsouthrefclk01_i(8) <= '0';
+  gty_qsouthrefclk11_i(8) <= '0'; 
+
+   --gty_qrefclk0_i(9) <= gty_refclk0_i(5);
+   --gty_qrefclk1_i(9) <= '0'; --gty_refclk1_i(5);
+   --gty_qnorthrefclk0_i(9) <= '0';
+   --gty_qnorthrefclk1_i(9) <= '0';
+   --gty_qsouthrefclk0_i(9) <= '0';
+   --gty_qsouthrefclk1_i(9) <= '0';
+   ----GTYE4_COMMON clock connection
+   --gty_qrefclk00_i(9) <= gty_refclk0_i(5);
+   --gty_qrefclk10_i(9) <= '0'; --gty_refclk1_i(5);
+   --gty_qrefclk01_i(9) <= '0';
+   --gty_qrefclk11_i(9) <= '0';
+   --gty_qnorthrefclk00_i(9) <= '0';
+   --gty_qnorthrefclk10_i(9) <= '0';
+   --gty_qnorthrefclk01_i(9) <= '0';
+   --gty_qnorthrefclk11_i(9) <= '0';
+   --gty_qsouthrefclk00_i(9) <= '0';
+   --gty_qsouthrefclk10_i(9) <= '0';
+   --gty_qsouthrefclk01_i(9) <= '0';
+   --gty_qsouthrefclk11_i(9) <= '0';
+   
+
+  gty_qrefclk0_i(9) <= '0';
+  gty_qrefclk1_i(9) <= '0';
+  gty_qnorthrefclk0_i(9) <= gty_refclk0_i(4);
+  gty_qnorthrefclk1_i(9) <= '0';
+  gty_qsouthrefclk0_i(9) <= '0';
+  gty_qsouthrefclk1_i(9) <= '0';
+--GTYE4_COMMON clock connection
+  gty_qrefclk00_i(9) <= '0';
+  gty_qrefclk10_i(9) <= '0';
+  gty_qrefclk01_i(9) <= '0';
+  gty_qrefclk11_i(9) <= '0';
+  gty_qnorthrefclk00_i(9) <= gty_refclk0_i(4);
+  gty_qnorthrefclk10_i(9) <= '0';
+  gty_qnorthrefclk01_i(9) <= '0';
+  gty_qnorthrefclk11_i(9) <= '0';
+  gty_qsouthrefclk00_i(9) <= '0';
+  gty_qsouthrefclk10_i(9) <= '0';
+  gty_qsouthrefclk01_i(9) <= '0';
+  gty_qsouthrefclk11_i(9) <= '0';
+ 
+  gty_qrefclk0_i(10) <= gty_refclk0_i(5);
+  gty_qrefclk1_i(10) <= '0'; --gty_refclk1_i(5);
+  gty_qnorthrefclk0_i(10) <= '0';
+  gty_qnorthrefclk1_i(10) <= '0';
+  gty_qsouthrefclk0_i(10) <= '0';
+  gty_qsouthrefclk1_i(10) <= '0';
+--GTYE4_COMMON clock connection
+  gty_qrefclk00_i(10) <= gty_refclk0_i(5);
+  gty_qrefclk10_i(10) <= '0'; --gty_refclk1_i(5);
+  gty_qrefclk01_i(10) <= '0';
+  gty_qrefclk11_i(10) <= '0';  
+  gty_qnorthrefclk00_i(10) <= '0';
+  gty_qnorthrefclk10_i(10) <= '0';
+  gty_qnorthrefclk01_i(10) <= '0';
+  gty_qnorthrefclk11_i(10) <= '0';  
+  gty_qsouthrefclk00_i(10) <= '0';
+  gty_qsouthrefclk10_i(10) <= '0';  
+  gty_qsouthrefclk01_i(10) <= '0';
+  gty_qsouthrefclk11_i(10) <= '0'; 
+ 
+
+  gty_qrefclk0_i(11) <= '0';
+  gty_qrefclk1_i(11) <= '0';
+  gty_qnorthrefclk0_i(11) <= gty_refclk0_i(5);
+  gty_qnorthrefclk1_i(11) <= '0';
+  gty_qsouthrefclk0_i(11) <= '0';
+  gty_qsouthrefclk1_i(11) <= '0';
+--GTYE4_COMMON clock connection
+  gty_qrefclk00_i(11) <= '0';
+  gty_qrefclk10_i(11) <= '0';
+  gty_qrefclk01_i(11) <= '0';
+  gty_qrefclk11_i(11) <= '0';
+  gty_qnorthrefclk00_i(11) <= gty_refclk0_i(5);
+  gty_qnorthrefclk10_i(11) <= '0';
+  gty_qnorthrefclk01_i(11) <= '0';
+  gty_qnorthrefclk11_i(11) <= '0';
+  gty_qsouthrefclk00_i(11) <= '0';
+  gty_qsouthrefclk10_i(11) <= '0';
+  gty_qsouthrefclk01_i(11) <= '0';
+  gty_qsouthrefclk11_i(11) <= '0';
+ 
+  gty_qrefclk0_i(12) <= '0';
+  gty_qrefclk1_i(12) <= '0';
+  gty_qnorthrefclk0_i(12) <= '0';
+  gty_qnorthrefclk1_i(12) <= '0';
+  gty_qsouthrefclk0_i(12) <= gty_refclk0_i(6);
+  gty_qsouthrefclk1_i(12) <= '0';
+--GTYE4_COMMON clock connection
+  gty_qrefclk00_i(12) <= '0';
+  gty_qrefclk10_i(12) <= '0';
+  gty_qrefclk01_i(12) <= '0';
+  gty_qrefclk11_i(12) <= '0';
+  gty_qnorthrefclk00_i(12) <= '0';
+  gty_qnorthrefclk10_i(12) <= '0';
+  gty_qnorthrefclk01_i(12) <= '0';
+  gty_qnorthrefclk11_i(12) <= '0';
+  gty_qsouthrefclk00_i(12) <= gty_refclk0_i(6);
+  gty_qsouthrefclk10_i(12) <= '0';
+  gty_qsouthrefclk01_i(12) <= '0';
+  gty_qsouthrefclk11_i(12) <= '0';
+ 
+  gty_qrefclk0_i(13) <= gty_refclk0_i(6);
+  gty_qrefclk1_i(13) <= '0'; --gty_refclk1_i(6);
+  gty_qnorthrefclk0_i(13) <= '0';
+  gty_qnorthrefclk1_i(13) <= '0';
+  gty_qsouthrefclk0_i(13) <= '0';
+  gty_qsouthrefclk1_i(13) <= '0';
+--GTYE4_COMMON clock connection
+  gty_qrefclk00_i(13) <= gty_refclk0_i(6);
+  gty_qrefclk10_i(13) <= '0'; --gty_refclk1_i(6);
+  gty_qrefclk01_i(13) <= '0';
+  gty_qrefclk11_i(13) <= '0';  
+  gty_qnorthrefclk00_i(13) <= '0';
+  gty_qnorthrefclk10_i(13) <= '0';
+  gty_qnorthrefclk01_i(13) <= '0';
+  gty_qnorthrefclk11_i(13) <= '0';  
+  gty_qsouthrefclk00_i(13) <= '0';
+  gty_qsouthrefclk10_i(13) <= '0';  
+  gty_qsouthrefclk01_i(13) <= '0';
+  gty_qsouthrefclk11_i(13) <= '0'; 
+ 
+
+  gty_qrefclk0_i(14) <= '0';
+  gty_qrefclk1_i(14) <= '0';
+  gty_qnorthrefclk0_i(14) <= '0';
+  gty_qnorthrefclk1_i(14) <= '0';
+  gty_qsouthrefclk0_i(14) <= gty_refclk0_i(7);
+  gty_qsouthrefclk1_i(14) <= '0';
+--GTYE4_COMMON clock connection
+  gty_qrefclk00_i(14) <= '0';
+  gty_qrefclk10_i(14) <= '0';
+  gty_qrefclk01_i(14) <= '0';
+  gty_qrefclk11_i(14) <= '0';
+  gty_qnorthrefclk00_i(14) <= '0';
+  gty_qnorthrefclk10_i(14) <= '0';
+  gty_qnorthrefclk01_i(14) <= '0';
+  gty_qnorthrefclk11_i(14) <= '0';
+  gty_qsouthrefclk00_i(14) <= gty_refclk0_i(7);
+  gty_qsouthrefclk10_i(14) <= '0';
+  gty_qsouthrefclk01_i(14) <= '0';
+  gty_qsouthrefclk11_i(14) <= '0';
+ 
+  gty_qrefclk0_i(15) <= gty_refclk0_i(7);
+  gty_qrefclk1_i(15) <= '0'; --gty_refclk1_i(7);
+  gty_qnorthrefclk0_i(15) <= '0';
+  gty_qnorthrefclk1_i(15) <= '0';
+  gty_qsouthrefclk0_i(15) <= '0';
+  gty_qsouthrefclk1_i(15) <= '0';
+--GTYE4_COMMON clock connection
+  gty_qrefclk00_i(15) <= gty_refclk0_i(7);
+  gty_qrefclk10_i(15) <= '0'; --gty_refclk1_i(7);
+  gty_qrefclk01_i(15) <= '0';
+  gty_qrefclk11_i(15) <= '0';  
+  gty_qnorthrefclk00_i(15) <= '0';
+  gty_qnorthrefclk10_i(15) <= '0';
+  gty_qnorthrefclk01_i(15) <= '0';
+  gty_qnorthrefclk11_i(15) <= '0';  
+  gty_qsouthrefclk00_i(15) <= '0';
+  gty_qsouthrefclk10_i(15) <= '0';  
+  gty_qsouthrefclk01_i(15) <= '0';
+  gty_qsouthrefclk11_i(15) <= '0'; 
+ 
+
+  gty_qrefclk0_i(16) <= '0';
+  gty_qrefclk1_i(16) <= '0';
+  gty_qnorthrefclk0_i(16) <= gty_refclk0_i(7);
+  gty_qnorthrefclk1_i(16) <= '0';
+  gty_qsouthrefclk0_i(16) <= '0';
+  gty_qsouthrefclk1_i(16) <= '0';
+--GTYE4_COMMON clock connection
+  gty_qrefclk00_i(16) <= '0';
+  gty_qrefclk10_i(16) <= '0';
+  gty_qrefclk01_i(16) <= '0';
+  gty_qrefclk11_i(16) <= '0';
+  gty_qnorthrefclk00_i(16) <= gty_refclk0_i(7);
+  gty_qnorthrefclk10_i(16) <= '0';
+  gty_qnorthrefclk01_i(16) <= '0';
+  gty_qnorthrefclk11_i(16) <= '0';
+  gty_qsouthrefclk00_i(16) <= '0';
+  gty_qsouthrefclk10_i(16) <= '0';
+  gty_qsouthrefclk01_i(16) <= '0';
+  gty_qsouthrefclk11_i(16) <= '0';
+ 
 
   --
   -- IBERT core instantiation

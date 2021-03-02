@@ -28,34 +28,114 @@ entity top is
     v_fpga_i2c_scl   : inout std_logic;
     v_fpga_i2c_sda   : inout std_logic;
 
+    --n_atca_ttc_in   : in std_logic;
+    --p_atca_ttc_in   : in std_logic;
+    --n_atca_tts_out  : out std_logic;
+    --p_atca_tts_out  : out std_logic;
+
+    -- quad 225 227 230 232
     p_clk0_chan0     : in std_logic;
     n_clk0_chan0     : in std_logic;
-    p_clk1_chan0     : in std_logic;
-    n_clk1_chan0     : in std_logic;
-    p_ff1_xmit0      : out std_logic;
-    n_ff1_xmit0      : out std_logic;
-    p_ff1_recv0      : in  std_logic;
-    n_ff1_recv0      : in  std_logic;
-                                    
-   p_clk0_chan3     : in std_logic;
-   n_clk0_chan3     : in std_logic;
-   p_clk1_chan3     : in std_logic;
-   n_clk1_chan3     : in std_logic;
-   
-   p_clk0_chan7     : in std_logic;
-   n_clk0_chan7     : in std_logic;
-   p_clk1_chan7     : in std_logic;
-   n_clk1_chan7     : in std_logic;
+    --p_clk1_chan0     : in std_logic;
+    --n_clk1_chan0     : in std_logic;
+    p_clk0_chan1     : in std_logic;
+    n_clk0_chan1     : in std_logic;
+    p_clk0_chan2     : in std_logic;
+    n_clk0_chan2     : in std_logic;
+    p_clk0_chan3     : in std_logic;
+    n_clk0_chan3     : in std_logic;
+    
+    --p_clk1_chan1     : in std_logic;
+    --n_clk1_chan1     : in std_logic;
+    --p_clk1_chan2     : in std_logic;
+    --n_clk1_chan2     : in std_logic;
+    --p_clk1_chan3     : in std_logic;
+    --n_clk1_chan3     : in std_logic;
+    
+    -- quad 125,126,128,130,132
+--    p_util_clk_chan1 : in std_logic;
+--    n_util_clk_chan1 : in std_logic;
+    p_clk0_chan4     : in std_logic;
+    n_clk0_chan4     : in std_logic;
+    p_clk0_chan5     : in std_logic;
+    n_clk0_chan5     : in std_logic;
+    p_clk0_chan6     : in std_logic;
+    n_clk0_chan6     : in std_logic;
+    p_clk0_chan7     : in std_logic;
+    n_clk0_chan7     : in std_logic;
+    
+    --p_clk1_chan4     : in std_logic;
+    --n_clk1_chan4     : in std_logic;
+    --p_clk1_chan5     : in std_logic;
+    --n_clk1_chan5     : in std_logic;
+    --p_clk1_chan6     : in std_logic;
+    --n_clk1_chan6     : in std_logic;
+    --p_clk1_chan7     : in std_logic;
+    --n_clk1_chan7     : in std_logic;
+    
+    p_unused_xmit   : out std_logic_vector(3 downto 0);
+    n_unused_xmit   : out std_logic_vector(3 downto 0);
+    p_unused_recv   : in std_logic_vector(3 downto 0);
+    n_unused_recv   : in std_logic_vector(3 downto 0);
 
-   p_ff12_xmit      : out std_logic_vector(11 downto 0);
-   n_ff12_xmit      : out std_logic_vector(11 downto 0);
-   p_ff12_recv      : in  std_logic_vector(11 downto 0);
-   n_ff12_recv      : in  std_logic_vector(11 downto 0);
-   p_ff11_xmit      : out std_logic_vector(11 downto 0);
-   n_ff11_xmit      : out std_logic_vector(11 downto 0);
-   p_ff11_recv      : in  std_logic_vector(11 downto 0);
-   n_ff11_recv      : in  std_logic_vector(11 downto 0);
-                               
+    -- quad 125 126 127 128 129 130 131 132 133
+    --p_mgt_k2v       : in  std_logic_vector(3 downto 0);
+    --n_mgt_k2v       : in  std_logic_vector(3 downto 0);
+    --p_mgt_v2k      : out std_logic_vector(3 downto 0);
+    --n_mgt_v2k      : out std_logic_vector(3 downto 0);
+    p_ff7_xmit      : out std_logic_vector(3 downto 0);
+    n_ff7_xmit      : out std_logic_vector(3 downto 0);
+    p_ff7_recv      : in  std_logic_vector(3 downto 0);
+    n_ff7_recv      : in  std_logic_vector(3 downto 0);
+    p_ff8_xmit      : out std_logic_vector(3 downto 0);
+    n_ff8_xmit      : out std_logic_vector(3 downto 0);
+    p_ff8_recv      : in  std_logic_vector(3 downto 0);
+    n_ff8_recv      : in  std_logic_vector(3 downto 0);
+    p_ff9_xmit      : out std_logic_vector(3 downto 0);
+    n_ff9_xmit      : out std_logic_vector(3 downto 0);
+    p_ff9_recv      : in  std_logic_vector(3 downto 0);
+    n_ff9_recv      : in  std_logic_vector(3 downto 0);
+    p_ff10_xmit      : out std_logic_vector(3 downto 0);
+    n_ff10_xmit      : out std_logic_vector(3 downto 0);
+    p_ff10_recv      : in  std_logic_vector(3 downto 0);
+    n_ff10_recv      : in  std_logic_vector(3 downto 0);
+    p_ff12_xmit      : out std_logic_vector(11 downto 0);
+    n_ff12_xmit      : out std_logic_vector(11 downto 0);
+    p_ff12_recv      : in  std_logic_vector(11 downto 0);
+    n_ff12_recv      : in  std_logic_vector(11 downto 0);
+    
+    -- quad 225 226 227 228 229 230 231 232 233
+    p_ff2_xmit      : out std_logic_vector(3 downto 0);
+    n_ff2_xmit      : out std_logic_vector(3 downto 0);
+    p_ff2_recv      : in  std_logic_vector(3 downto 0);
+    n_ff2_recv      : in  std_logic_vector(3 downto 0);
+                                                                                                                    
+    p_ff3_xmit      : out std_logic_vector(3 downto 0);
+    n_ff3_xmit      : out std_logic_vector(3 downto 0);
+    p_ff3_recv      : in  std_logic_vector(3 downto 0);
+    n_ff3_recv      : in  std_logic_vector(3 downto 0);
+    p_ff4_xmit      : out std_logic_vector(3 downto 0);
+    n_ff4_xmit      : out std_logic_vector(3 downto 0);
+    p_ff4_recv      : in  std_logic_vector(3 downto 0);
+    n_ff4_recv      : in  std_logic_vector(3 downto 0);
+    p_ff5_xmit      : out std_logic_vector(3 downto 0);
+    n_ff5_xmit      : out std_logic_vector(3 downto 0);
+    p_ff5_recv      : in  std_logic_vector(3 downto 0);
+    n_ff5_recv      : in  std_logic_vector(3 downto 0);
+    p_ff6_xmit      : out std_logic_vector(3 downto 0);
+    n_ff6_xmit      : out std_logic_vector(3 downto 0);
+    p_ff6_recv      : in  std_logic_vector(3 downto 0);
+    n_ff6_recv      : in  std_logic_vector(3 downto 0);
+    p_ff11_xmit      : out std_logic_vector(11 downto 0);
+    n_ff11_xmit      : out std_logic_vector(11 downto 0);
+    p_ff11_recv      : in  std_logic_vector(11 downto 0);
+    n_ff11_recv      : in  std_logic_vector(11 downto 0);
+                                                                                    
+    p_ff1_xmit      : out std_logic_vector(3 downto 0);
+    n_ff1_xmit      : out std_logic_vector(3 downto 0);
+    p_ff1_recv      : in  std_logic_vector(3 downto 0);
+    n_ff1_recv      : in  std_logic_vector(3 downto 0);
+                                    
     -- tri-color LED
     led_red : out std_logic;
     led_green : out std_logic;
@@ -244,14 +324,14 @@ begin  -- architecture structure
       DRP_readMISO         => local_AXI_readMISO(0),
       DRP_writeMOSI        => local_AXI_writeMOSI(0),
       DRP_writeMISO        => local_AXI_writeMISO(0),
-      refclk0_p => p_clk0_chan0,
-      refclk0_n => n_clk0_chan0,
-      refclk1_p => p_clk1_chan0,
-      refclk1_n => n_clk1_chan0,
-      tx_p     => p_ff1_xmit0,
-      tx_n     => n_ff1_xmit0,
-      rx_p     => p_ff1_recv0,
-      rx_n     => n_ff1_recv0,
+--      refclk0_p => p_util_clk_chan0,
+--      refclk0_n => n_util_clk_chan0,
+----      refclk1_p => p_clk1_chan0,
+----      refclk1_n => n_clk1_chan0,
+--      tx_p     => p_atca_tts_out,
+--      tx_n     => n_atca_tts_out,
+--      rx_p     => p_atca_ttc_in,
+--      rx_n     => n_atca_ttc_in,
       heater_output => heater_output,
       TxRx_clk_sel => '0');
   
@@ -270,129 +350,407 @@ begin  -- architecture structure
     port map (
       gty_sysclkp_i => p_clk_200a,
       gty_sysclkn_i => n_clk_200a,
-       
+
+      -- quad 125
+      --gty_rxn_i(0) => n_mgt_k2v(0),
+      --gty_rxn_i(1) => n_mgt_k2v(1),
+      --gty_rxn_i(2) => n_mgt_k2v(2),
+      --gty_rxn_i(3) => n_mgt_k2v(3),
+      
+     -- quad 126
+      gty_rxn_i(4-4) => n_ff7_recv(0),
+      gty_rxn_i(5-4) => n_ff7_recv(1),
+      gty_rxn_i(6-4) => n_ff7_recv(2),
+      gty_rxn_i(7-4) => n_ff7_recv(3),
+      -- quad 127
+      gty_rxn_i(8-4) => n_ff8_recv(0),
+      gty_rxn_i(9-4) => n_ff8_recv(1),
+      gty_rxn_i(10-4) => n_ff8_recv(2),
+      gty_rxn_i(11-4) => n_ff8_recv(3),
+      -- quad 128
+      gty_rxn_i(12-4) => n_ff9_recv(0),
+      gty_rxn_i(13-4) => n_ff9_recv(1),
+      gty_rxn_i(14-4) => n_ff9_recv(2),
+      gty_rxn_i(15-4) => n_ff9_recv(3),
+      -- quad 129
+      gty_rxn_i(16-4) => n_unused_recv(0),
+      gty_rxn_i(17-4) => n_unused_recv(1),
+      gty_rxn_i(18-4) => n_unused_recv(2),
+      gty_rxn_i(19-4) => n_unused_recv(3),
+      -- quad 130
+      gty_rxn_i(20-4) => n_ff10_recv(0),
+      gty_rxn_i(21-4) => n_ff10_recv(1),
+      gty_rxn_i(22-4) => n_ff10_recv(2),
+      gty_rxn_i(23-4) => n_ff10_recv(3),
+      
       -- quad 131, 132, 133
-      gty_rxn_i(0) => n_ff12_recv(11),
-      gty_rxn_i(1) => n_ff12_recv(10),
-      gty_rxn_i(2) => n_ff12_recv(9),
-      gty_rxn_i(3) => n_ff12_recv(8),
-      gty_rxn_i(4) => n_ff12_recv(7),
-      gty_rxn_i(5) => n_ff12_recv(6),
-      gty_rxn_i(6) => n_ff12_recv(5),
-      gty_rxn_i(7) => n_ff12_recv(4),
-      gty_rxn_i(8) => n_ff12_recv(3),
-      gty_rxn_i(9) => n_ff12_recv(2),
-      gty_rxn_i(10) => n_ff12_recv(1),
-      gty_rxn_i(11) => n_ff12_recv(0),
+      gty_rxn_i(24-4) => n_ff12_recv(11),
+      gty_rxn_i(25-4) => n_ff12_recv(10),
+      gty_rxn_i(26-4) => n_ff12_recv(9),
+      gty_rxn_i(27-4) => n_ff12_recv(8),
+      gty_rxn_i(28-4) => n_ff12_recv(7),
+      gty_rxn_i(29-4) => n_ff12_recv(6),
+      gty_rxn_i(30-4) => n_ff12_recv(5),
+      gty_rxn_i(31-4) => n_ff12_recv(4),
+      gty_rxn_i(32-4) => n_ff12_recv(3),
+      gty_rxn_i(33-4) => n_ff12_recv(2),
+      gty_rxn_i(34-4) => n_ff12_recv(1),
+      gty_rxn_i(35-4) => n_ff12_recv(0),
+      
+      -- quad 225
+      gty_rxn_i(36-4) => n_ff1_recv(3),
+      gty_rxn_i(37-4) => n_ff1_recv(2),
+      gty_rxn_i(38-4) => n_ff1_recv(1),
+      gty_rxn_i(39-4) => n_ff1_recv(0),
+      -- quad 226
+      gty_rxn_i(40-4) => n_ff2_recv(3),
+      gty_rxn_i(41-4) => n_ff2_recv(2),
+      gty_rxn_i(42-4) => n_ff2_recv(1),
+      gty_rxn_i(43-4) => n_ff2_recv(0),
+      -- quad 227
+      gty_rxn_i(44-4) => n_ff3_recv(3),
+      gty_rxn_i(45-4) => n_ff3_recv(2),
+      gty_rxn_i(46-4) => n_ff3_recv(1),
+      gty_rxn_i(47-4) => n_ff3_recv(0),
+      -- quad 228
+      gty_rxn_i(48-4) => n_ff4_recv(3),
+      gty_rxn_i(49-4) => n_ff4_recv(2),
+      gty_rxn_i(50-4) => n_ff4_recv(1),
+      gty_rxn_i(51-4) => n_ff4_recv(0),
+      -- quad 229
+      gty_rxn_i(52-4) => n_ff5_recv(3),
+      gty_rxn_i(53-4) => n_ff5_recv(2),
+      gty_rxn_i(54-4) => n_ff5_recv(1),
+      gty_rxn_i(55-4) => n_ff5_recv(0),
+      -- quad 230
+      gty_rxn_i(56-4) => n_ff6_recv(3),
+      gty_rxn_i(57-4) => n_ff6_recv(2),
+      gty_rxn_i(58-4) => n_ff6_recv(1),
+      gty_rxn_i(59-4) => n_ff6_recv(0),
       
       -- quad 231, 232, 233
-      gty_rxn_i(12) => n_ff11_recv(0),
-      gty_rxn_i(13) => n_ff11_recv(1),
-      gty_rxn_i(14) => n_ff11_recv(2),
-      gty_rxn_i(15) => n_ff11_recv(3),
-      gty_rxn_i(16) => n_ff11_recv(4),
-      gty_rxn_i(17) => n_ff11_recv(5),
-      gty_rxn_i(18) => n_ff11_recv(6),
-      gty_rxn_i(19) => n_ff11_recv(7),
-      gty_rxn_i(20) => n_ff11_recv(8),
-      gty_rxn_i(21) => n_ff11_recv(9),
-      gty_rxn_i(22) => n_ff11_recv(10),
-      gty_rxn_i(23) => n_ff11_recv(11),
+      gty_rxn_i(60-4) => n_ff11_recv(0),
+      gty_rxn_i(61-4) => n_ff11_recv(1),
+      gty_rxn_i(62-4) => n_ff11_recv(2),
+      gty_rxn_i(63-4) => n_ff11_recv(3),
+      gty_rxn_i(64-4) => n_ff11_recv(4),
+      gty_rxn_i(65-4) => n_ff11_recv(5),
+      gty_rxn_i(66-4) => n_ff11_recv(6),
+      gty_rxn_i(67-4) => n_ff11_recv(7),
+      gty_rxn_i(68-4) => n_ff11_recv(8),
+      gty_rxn_i(69-4) => n_ff11_recv(9),
+      gty_rxn_i(70-4) => n_ff11_recv(10),
+      gty_rxn_i(71-4) => n_ff11_recv(11),
+      
+     -- quad 125
+      --gty_rxp_i(0-4) => p_mgt_k2v(0),
+      --gty_rxp_i(1-4) => p_mgt_k2v(1),
+      --gty_rxp_i(2-4) => p_mgt_k2v(2),
+      --gty_rxp_i(3-4) => p_mgt_k2v(3),
+      
+      -- quad 126
+      gty_rxp_i(4-4) => p_ff7_recv(0),
+      gty_rxp_i(5-4) => p_ff7_recv(1),
+      gty_rxp_i(6-4) => p_ff7_recv(2),
+      gty_rxp_i(7-4) => p_ff7_recv(3),
+      -- quad 127
+      gty_rxp_i(8-4) => p_ff8_recv(0),
+      gty_rxp_i(9-4) => p_ff8_recv(1),
+      gty_rxp_i(10-4) => p_ff8_recv(2),
+      gty_rxp_i(11-4) => p_ff8_recv(3),
+      -- quad 128
+      gty_rxp_i(12-4) => p_ff9_recv(0),
+      gty_rxp_i(13-4) => p_ff9_recv(1),
+      gty_rxp_i(14-4) => p_ff9_recv(2),
+      gty_rxp_i(15-4) => p_ff9_recv(3),
+      -- quad 129
+      gty_rxp_i(16-4) => p_unused_recv(0),
+      gty_rxp_i(17-4) => p_unused_recv(1),
+      gty_rxp_i(18-4) => p_unused_recv(2),
+      gty_rxp_i(19-4) => p_unused_recv(3),
+      -- quad 130
+      gty_rxp_i(20-4) => p_ff10_recv(0),
+      gty_rxp_i(21-4) => p_ff10_recv(1),
+      gty_rxp_i(22-4) => p_ff10_recv(2),
+      gty_rxp_i(23-4) => p_ff10_recv(3),
       
       -- quad 131, 132, 133
-      gty_rxp_i(0) => p_ff12_recv(11),
-      gty_rxp_i(1) => p_ff12_recv(10),
-      gty_rxp_i(2) => p_ff12_recv(9),
-      gty_rxp_i(3) => p_ff12_recv(8),
-      gty_rxp_i(4) => p_ff12_recv(7),
-      gty_rxp_i(5) => p_ff12_recv(6),
-      gty_rxp_i(6) => p_ff12_recv(5),
-      gty_rxp_i(7) => p_ff12_recv(4),
-      gty_rxp_i(8) => p_ff12_recv(3),
-      gty_rxp_i(9) => p_ff12_recv(2),
-      gty_rxp_i(10) => p_ff12_recv(1),
-      gty_rxp_i(11) => p_ff12_recv(0),
+      gty_rxp_i(24-4) => p_ff12_recv(11),
+      gty_rxp_i(25-4) => p_ff12_recv(10),
+      gty_rxp_i(26-4) => p_ff12_recv(9),
+      gty_rxp_i(27-4) => p_ff12_recv(8),
+      gty_rxp_i(28-4) => p_ff12_recv(7),
+      gty_rxp_i(29-4) => p_ff12_recv(6),
+      gty_rxp_i(30-4) => p_ff12_recv(5),
+      gty_rxp_i(31-4) => p_ff12_recv(4),
+      gty_rxp_i(32-4) => p_ff12_recv(3),
+      gty_rxp_i(33-4) => p_ff12_recv(2),
+      gty_rxp_i(34-4) => p_ff12_recv(1),
+      gty_rxp_i(35-4) => p_ff12_recv(0),
 
-      -- quad 231, 232, 233
-      gty_rxp_i(12) => p_ff11_recv(0),
-      gty_rxp_i(13) => p_ff11_recv(1),
-      gty_rxp_i(14) => p_ff11_recv(2),
-      gty_rxp_i(15) => p_ff11_recv(3),
-      gty_rxp_i(16) => p_ff11_recv(4),
-      gty_rxp_i(17) => p_ff11_recv(5),
-      gty_rxp_i(18) => p_ff11_recv(6),
-      gty_rxp_i(19) => p_ff11_recv(7),
-      gty_rxp_i(20) => p_ff11_recv(8),
-      gty_rxp_i(21) => p_ff11_recv(9),
-      gty_rxp_i(22) => p_ff11_recv(10),
-      gty_rxp_i(23) => p_ff11_recv(11),
-      
-      gty_refclk0p_i(0) => p_clk0_chan7,
-      gty_refclk0p_i(1) => p_clk0_chan3,
-
-      gty_refclk0n_i(0) => n_clk0_chan7,
-      gty_refclk0n_i(1) => n_clk0_chan3,
-
-      gty_refclk1p_i(0) => p_clk1_chan7,
-      gty_refclk1p_i(1) => p_clk1_chan3,
-
-      gty_refclk1n_i(0) => n_clk1_chan7,
-      gty_refclk1n_i(1) => n_clk1_chan3,
-
-      -- quad 131, 132, 133
-      gty_txn_o(0) => n_ff12_xmit(11),
-      gty_txn_o(1) => n_ff12_xmit(10),
-      gty_txn_o(2) => n_ff12_xmit(9),
-      gty_txn_o(3) => n_ff12_xmit(8),
-      gty_txn_o(4) => n_ff12_xmit(7),
-      gty_txn_o(5) => n_ff12_xmit(6),
-      gty_txn_o(6) => n_ff12_xmit(5),
-      gty_txn_o(7) => n_ff12_xmit(4),
-      gty_txn_o(8) => n_ff12_xmit(3),
-      gty_txn_o(9) => n_ff12_xmit(2),
-      gty_txn_o(10) => n_ff12_xmit(1),
-      gty_txn_o(11) => n_ff12_xmit(0),
-
-      -- quad 231, 232, 233
-      gty_txn_o(12) => n_ff11_xmit(0),
-      gty_txn_o(13) => n_ff11_xmit(1),
-      gty_txn_o(14) => n_ff11_xmit(2),
-      gty_txn_o(15) => n_ff11_xmit(3),
-      gty_txn_o(16) => n_ff11_xmit(4),
-      gty_txn_o(17) => n_ff11_xmit(5),
-      gty_txn_o(18) => n_ff11_xmit(6),
-      gty_txn_o(19) => n_ff11_xmit(7),
-      gty_txn_o(20) => n_ff11_xmit(8),
-      gty_txn_o(21) => n_ff11_xmit(9),
-      gty_txn_o(22) => n_ff11_xmit(10),
-      gty_txn_o(23) => n_ff11_xmit(11),
-
-      -- quad 131, 132, 133
-      gty_txp_o(0) => p_ff12_xmit(11),
-      gty_txp_o(1) => p_ff12_xmit(10),
-      gty_txp_o(2) => p_ff12_xmit(9),
-      gty_txp_o(3) => p_ff12_xmit(8),
-      gty_txp_o(4) => p_ff12_xmit(7),
-      gty_txp_o(5) => p_ff12_xmit(6),
-      gty_txp_o(6) => p_ff12_xmit(5),
-      gty_txp_o(7) => p_ff12_xmit(4),
-      gty_txp_o(8) => p_ff12_xmit(3),
-      gty_txp_o(9) => p_ff12_xmit(2),
-      gty_txp_o(10) => p_ff12_xmit(1),
-      gty_txp_o(11) => p_ff12_xmit(0),
+      -- quad 225
+      gty_rxp_i(36-4) => p_ff1_recv(3),
+      gty_rxp_i(37-4) => p_ff1_recv(2),
+      gty_rxp_i(38-4) => p_ff1_recv(1),
+      gty_rxp_i(39-4) => p_ff1_recv(0),
+      -- quad 226
+      gty_rxp_i(40-4) => p_ff2_recv(3),
+      gty_rxp_i(41-4) => p_ff2_recv(2),
+      gty_rxp_i(42-4) => p_ff2_recv(1),
+      gty_rxp_i(43-4) => p_ff2_recv(0),
+      -- quad 227
+      gty_rxp_i(44-4) => p_ff3_recv(3),
+      gty_rxp_i(45-4) => p_ff3_recv(2),
+      gty_rxp_i(46-4) => p_ff3_recv(1),
+      gty_rxp_i(47-4) => p_ff3_recv(0),
+      -- quad 228
+      gty_rxp_i(48-4) => p_ff4_recv(3),
+      gty_rxp_i(49-4) => p_ff4_recv(2),
+      gty_rxp_i(50-4) => p_ff4_recv(1),
+      gty_rxp_i(51-4) => p_ff4_recv(0),
+      -- quad 229
+      gty_rxp_i(52-4) => p_ff5_recv(3),
+      gty_rxp_i(53-4) => p_ff5_recv(2),
+      gty_rxp_i(54-4) => p_ff5_recv(1),
+      gty_rxp_i(55-4) => p_ff5_recv(0),
+      -- quad 230
+      gty_rxp_i(56-4) => p_ff6_recv(3),
+      gty_rxp_i(57-4) => p_ff6_recv(2),
+      gty_rxp_i(58-4) => p_ff6_recv(1),
+      gty_rxp_i(59-4) => p_ff6_recv(0),
       
       -- quad 231, 232, 233
-      gty_txp_o(12) => p_ff11_xmit(0),
-      gty_txp_o(13) => p_ff11_xmit(1),
-      gty_txp_o(14) => p_ff11_xmit(2),
-      gty_txp_o(15) => p_ff11_xmit(3),
-      gty_txp_o(16) => p_ff11_xmit(4),
-      gty_txp_o(17) => p_ff11_xmit(5),
-      gty_txp_o(18) => p_ff11_xmit(6),
-      gty_txp_o(19) => p_ff11_xmit(7),
-      gty_txp_o(20) => p_ff11_xmit(8),
-      gty_txp_o(21) => p_ff11_xmit(9),
-      gty_txp_o(22) => p_ff11_xmit(10),
-      gty_txp_o(23) => p_ff11_xmit(11)
+      gty_rxp_i(60-4) => p_ff11_recv(0),
+      gty_rxp_i(61-4) => p_ff11_recv(1),
+      gty_rxp_i(62-4) => p_ff11_recv(2),
+      gty_rxp_i(63-4) => p_ff11_recv(3),
+      gty_rxp_i(64-4) => p_ff11_recv(4),
+      gty_rxp_i(65-4) => p_ff11_recv(5),
+      gty_rxp_i(66-4) => p_ff11_recv(6),
+      gty_rxp_i(67-4) => p_ff11_recv(7),
+      gty_rxp_i(68-4) => p_ff11_recv(8),
+      gty_rxp_i(69-4) => p_ff11_recv(9),
+      gty_rxp_i(70-4) => p_ff11_recv(10),
+      gty_rxp_i(71-4) => p_ff11_recv(11),
+      
+--      gty_refclk0p_i(0-4) => p_util_clk_chan1,
+      gty_refclk0p_i(1-1) => p_clk0_chan4,
+      gty_refclk0p_i(2-1) => p_clk0_chan5,
+      gty_refclk0p_i(3-1) => p_clk0_chan6,
+      gty_refclk0p_i(4-1) => p_clk0_chan7,
+      gty_refclk0p_i(5-1) => p_clk0_chan0,
+      gty_refclk0p_i(6-1) => p_clk0_chan1,
+      gty_refclk0p_i(7-1) => p_clk0_chan2,
+      gty_refclk0p_i(8-1) => p_clk0_chan3,
+
+--      gty_refclk0n_i(0-1) => n_util_clk_chan1,
+      gty_refclk0n_i(1-1) => n_clk0_chan4,
+      gty_refclk0n_i(2-1) => n_clk0_chan5,
+      gty_refclk0n_i(3-1) => n_clk0_chan6,
+      gty_refclk0n_i(4-1) => n_clk0_chan7,
+      gty_refclk0n_i(5-1) => n_clk0_chan0,
+      gty_refclk0n_i(6-1) => n_clk0_chan1,
+      gty_refclk0n_i(7-1) => n_clk0_chan2,
+      gty_refclk0n_i(8-1) => n_clk0_chan3,
+
+      --gty_refclk1p_i(0-4) => open,
+      --gty_refclk1p_i(1-4) => p_clk1_chan4,
+      --gty_refclk1p_i(2-4) => p_clk1_chan5,
+      --gty_refclk1p_i(3-4) => p_clk1_chan6,
+      --gty_refclk1p_i(4-4) => p_clk1_chan7,
+      --gty_refclk1p_i(5-4) => p_clk1_chan0,
+      --gty_refclk1p_i(6-4) => p_clk1_chan1,
+      --gty_refclk1p_i(7-4) => p_clk1_chan2,
+      --gty_refclk1p_i(8-4) => p_clk1_chan3,
+
+      --gty_refclk1n_i(0-4) => open,
+      --gty_refclk1n_i(1-4) => n_clk1_chan4,
+      --gty_refclk1n_i(2-4) => n_clk1_chan5,
+      --gty_refclk1n_i(3-4) => n_clk1_chan6,
+      --gty_refclk1n_i(4-4) => n_clk1_chan7,
+      --gty_refclk1n_i(5-4) => n_clk1_chan0,
+      --gty_refclk1n_i(6-4) => n_clk1_chan1,
+      --gty_refclk1n_i(7-4) => n_clk1_chan2,
+      --gty_refclk1n_i(8-4) => n_clk1_chan3,
+
+      -- quad 125
+      --gty_txn_o(0-4) => n_mgt_v2k(0),
+      --gty_txn_o(1-4) => n_mgt_v2k(1),
+      --gty_txn_o(2-4) => n_mgt_v2k(2),
+      --gty_txn_o(3-4) => n_mgt_v2k(3),
+      -- quad 126
+      gty_txn_o(4-4) => n_ff7_xmit(0),
+      gty_txn_o(5-4) => n_ff7_xmit(1),
+      gty_txn_o(6-4) => n_ff7_xmit(2),
+      gty_txn_o(7-4) => n_ff7_xmit(3),
+      -- quad 127
+      gty_txn_o(8-4) => n_ff8_xmit(0),
+      gty_txn_o(9-4) => n_ff8_xmit(1),
+      gty_txn_o(10-4) => n_ff8_xmit(2),
+      gty_txn_o(11-4) => n_ff8_xmit(3),
+      -- quad 128
+      gty_txn_o(12-4) => n_ff9_xmit(0),
+      gty_txn_o(13-4) => n_ff9_xmit(1),
+      gty_txn_o(14-4) => n_ff9_xmit(2),
+      gty_txn_o(15-4) => n_ff9_xmit(3),
+      -- quad 129
+      gty_txn_o(16-4) => n_unused_xmit(0),
+      gty_txn_o(17-4) => n_unused_xmit(1),
+      gty_txn_o(18-4) => n_unused_xmit(2),
+      gty_txn_o(19-4) => n_unused_xmit(3),
+      -- quad 130
+      gty_txn_o(20-4) => n_ff10_xmit(0),
+      gty_txn_o(21-4) => n_ff10_xmit(1),
+      gty_txn_o(22-4) => n_ff10_xmit(2),
+      gty_txn_o(23-4) => n_ff10_xmit(3),
+      
+      -- quad 131, 132, 133
+      gty_txn_o(24-4) => n_ff12_xmit(11),
+      gty_txn_o(25-4) => n_ff12_xmit(10),
+      gty_txn_o(26-4) => n_ff12_xmit(9),
+      gty_txn_o(27-4) => n_ff12_xmit(8),
+      gty_txn_o(28-4) => n_ff12_xmit(7),
+      gty_txn_o(29-4) => n_ff12_xmit(6),
+      gty_txn_o(30-4) => n_ff12_xmit(5),
+      gty_txn_o(31-4) => n_ff12_xmit(4),
+      gty_txn_o(32-4) => n_ff12_xmit(3),
+      gty_txn_o(33-4) => n_ff12_xmit(2),
+      gty_txn_o(34-4) => n_ff12_xmit(1),
+      gty_txn_o(35-4) => n_ff12_xmit(0),
+
+       -- quad 225
+      gty_txn_o(36-4) => n_ff1_xmit(3),
+      gty_txn_o(37-4) => n_ff1_xmit(2),
+      gty_txn_o(38-4) => n_ff1_xmit(1),
+      gty_txn_o(39-4) => n_ff1_xmit(0),
+      -- quad 226
+      gty_txn_o(40-4) => n_ff2_xmit(3),
+      gty_txn_o(41-4) => n_ff2_xmit(2),
+      gty_txn_o(42-4) => n_ff2_xmit(1),
+      gty_txn_o(43-4) => n_ff2_xmit(0),
+      -- quad 227
+      gty_txn_o(44-4) => n_ff3_xmit(3),
+      gty_txn_o(45-4) => n_ff3_xmit(2),
+      gty_txn_o(46-4) => n_ff3_xmit(1),
+      gty_txn_o(47-4) => n_ff3_xmit(0),
+      -- quad 228
+      gty_txn_o(48-4) => n_ff4_xmit(3),
+      gty_txn_o(49-4) => n_ff4_xmit(2),
+      gty_txn_o(50-4) => n_ff4_xmit(1),
+      gty_txn_o(51-4) => n_ff4_xmit(0),
+      -- quad 229
+      gty_txn_o(52-4) => n_ff5_xmit(3),
+      gty_txn_o(53-4) => n_ff5_xmit(2),
+      gty_txn_o(54-4) => n_ff5_xmit(1),
+      gty_txn_o(55-4) => n_ff5_xmit(0),
+      -- quad 230
+      gty_txn_o(56-4) => n_ff6_xmit(3),
+      gty_txn_o(57-4) => n_ff6_xmit(2),
+      gty_txn_o(58-4) => n_ff6_xmit(1),
+      gty_txn_o(59-4) => n_ff6_xmit(0),
+      
+      -- quad 231, 232, 233
+      gty_txn_o(60-4) => n_ff11_xmit(0),
+      gty_txn_o(61-4) => n_ff11_xmit(1),
+      gty_txn_o(62-4) => n_ff11_xmit(2),
+      gty_txn_o(63-4) => n_ff11_xmit(3),
+      gty_txn_o(64-4) => n_ff11_xmit(4),
+      gty_txn_o(65-4) => n_ff11_xmit(5),
+      gty_txn_o(66-4) => n_ff11_xmit(6),
+      gty_txn_o(67-4) => n_ff11_xmit(7),
+      gty_txn_o(68-4) => n_ff11_xmit(8),
+      gty_txn_o(69-4) => n_ff11_xmit(9),
+      gty_txn_o(70-4) => n_ff11_xmit(10),
+      gty_txn_o(71-4) => n_ff11_xmit(11),
+
+      -- quad 125
+      --gty_txp_o(0-4) => p_mgt_v2k(0),
+      --gty_txp_o(1-4) => p_mgt_v2k(1),
+      --gty_txp_o(2-4) => p_mgt_v2k(2),
+      --gty_txp_o(3-4) => p_mgt_v2k(3),
+      
+      -- quad 126
+      gty_txp_o(4-4) => p_ff7_xmit(0),
+      gty_txp_o(5-4) => p_ff7_xmit(1),
+      gty_txp_o(6-4) => p_ff7_xmit(2),
+      gty_txp_o(7-4) => p_ff7_xmit(3),
+      -- quad 127
+      gty_txp_o(8-4) => p_ff8_xmit(0),
+      gty_txp_o(9-4) => p_ff8_xmit(1),
+      gty_txp_o(10-4) => p_ff8_xmit(2),
+      gty_txp_o(11-4) => p_ff8_xmit(3),
+      -- quad 128
+      gty_txp_o(12-4) => p_ff9_xmit(0),
+      gty_txp_o(13-4) => p_ff9_xmit(1),
+      gty_txp_o(14-4) => p_ff9_xmit(2),
+      gty_txp_o(15-4) => p_ff9_xmit(3),
+      -- quad 129
+      gty_txp_o(16-4) => p_unused_xmit(0),
+      gty_txp_o(17-4) => p_unused_xmit(1),
+      gty_txp_o(18-4) => p_unused_xmit(2),
+      gty_txp_o(19-4) => p_unused_xmit(3),
+      -- quad 130
+      gty_txp_o(20-4) => p_ff10_xmit(0),
+      gty_txp_o(21-4) => p_ff10_xmit(1),
+      gty_txp_o(22-4) => p_ff10_xmit(2),
+      gty_txp_o(23-4) => p_ff10_xmit(3),
+      
+      -- quad 131, 132, 133
+      gty_txp_o(24-4) => p_ff12_xmit(11),
+      gty_txp_o(25-4) => p_ff12_xmit(10),
+      gty_txp_o(26-4) => p_ff12_xmit(9),
+      gty_txp_o(27-4) => p_ff12_xmit(8),
+      gty_txp_o(28-4) => p_ff12_xmit(7),
+      gty_txp_o(29-4) => p_ff12_xmit(6),
+      gty_txp_o(30-4) => p_ff12_xmit(5),
+      gty_txp_o(31-4) => p_ff12_xmit(4),
+      gty_txp_o(32-4) => p_ff12_xmit(3),
+      gty_txp_o(33-4) => p_ff12_xmit(2),
+      gty_txp_o(34-4) => p_ff12_xmit(1),
+      gty_txp_o(35-4) => p_ff12_xmit(0),
+
+       -- quad 225
+      gty_txp_o(36-4) => p_ff1_xmit(3),
+      gty_txp_o(37-4) => p_ff1_xmit(2),
+      gty_txp_o(38-4) => p_ff1_xmit(1),
+      gty_txp_o(39-4) => p_ff1_xmit(0),
+      -- quad 226
+      gty_txp_o(40-4) => p_ff2_xmit(3),
+      gty_txp_o(41-4) => p_ff2_xmit(2),
+      gty_txp_o(42-4) => p_ff2_xmit(1),
+      gty_txp_o(43-4) => p_ff2_xmit(0),
+      -- quad 227
+      gty_txp_o(44-4) => p_ff3_xmit(3),
+      gty_txp_o(45-4) => p_ff3_xmit(2),
+      gty_txp_o(46-4) => p_ff3_xmit(1),
+      gty_txp_o(47-4) => p_ff3_xmit(0),
+      -- quad 228
+      gty_txp_o(48-4) => p_ff4_xmit(3),
+      gty_txp_o(49-4) => p_ff4_xmit(2),
+      gty_txp_o(50-4) => p_ff4_xmit(1),
+      gty_txp_o(51-4) => p_ff4_xmit(0),
+      -- quad 229
+      gty_txp_o(52-4) => p_ff5_xmit(3),
+      gty_txp_o(53-4) => p_ff5_xmit(2),
+      gty_txp_o(54-4) => p_ff5_xmit(1),
+      gty_txp_o(55-4) => p_ff5_xmit(0),
+      -- quad 230
+      gty_txp_o(56-4) => p_ff6_xmit(3),
+      gty_txp_o(57-4) => p_ff6_xmit(2),
+      gty_txp_o(58-4) => p_ff6_xmit(1),
+      gty_txp_o(59-4) => p_ff6_xmit(0),
+      -- quad 231, 232, 233
+      gty_txp_o(60-4) => p_ff11_xmit(0),
+      gty_txp_o(61-4) => p_ff11_xmit(1),
+      gty_txp_o(62-4) => p_ff11_xmit(2),
+      gty_txp_o(63-4) => p_ff11_xmit(3),
+      gty_txp_o(64-4) => p_ff11_xmit(4),
+      gty_txp_o(65-4) => p_ff11_xmit(5),
+      gty_txp_o(66-4) => p_ff11_xmit(6),
+      gty_txp_o(67-4) => p_ff11_xmit(7),
+      gty_txp_o(68-4) => p_ff11_xmit(8),
+      gty_txp_o(69-4) => p_ff11_xmit(9),
+      gty_txp_o(70-4) => p_ff11_xmit(10),
+      gty_txp_o(71-4) => p_ff11_xmit(11)
       );
 end architecture structure;

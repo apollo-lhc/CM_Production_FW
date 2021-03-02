@@ -171,8 +171,8 @@ set_property PACKAGE_PIN  BA45 [get_ports  {p_mgt_k2v[1]} ]
 set_property PACKAGE_PIN  AW46 [get_ports  {n_mgt_k2v[2]} ]
 set_property PACKAGE_PIN  AW45 [get_ports  {p_mgt_k2v[2]} ]
 
-set_property PACKAGE_PIN  BF42 [get_ports  {n_mgt_v2k[0]} ]
-set_property PACKAGE_PIN  BF43 [get_ports  {p_mgt_v2k[0]} ]
+set_property PACKAGE_PIN  BF43 [get_ports  {n_mgt_v2k[0]} ]
+set_property PACKAGE_PIN  BF42 [get_ports  {p_mgt_v2k[0]} ]
 set_property PACKAGE_PIN  BD43 [get_ports  {n_mgt_v2k[1]} ]
 set_property PACKAGE_PIN  BD42 [get_ports  {p_mgt_v2k[1]} ]
 set_property PACKAGE_PIN  BB43 [get_ports  {n_mgt_v2k[2]} ]
@@ -474,6 +474,30 @@ set_property PACKAGE_PIN  AJ40 [get_ports  {p_ff9_xmit[0]} ]
 set_property PACKAGE_PIN  AH38 [get_ports  {p_ff9_xmit[1]} ]
 set_property PACKAGE_PIN  AG40 [get_ports  {p_ff9_xmit[2]} ]
 set_property PACKAGE_PIN  AF38 [get_ports  {p_ff9_xmit[3]} ]
+#-----------------------------------------------
+
+#-----------------------------------------------
+# unused site quad 129 receivers
+set_property PACKAGE_PIN  AE46 [get_ports  {n_unused_recv[0]} ]
+set_property PACKAGE_PIN  AD44 [get_ports  {n_unused_recv[1]} ]
+set_property PACKAGE_PIN  AC46 [get_ports  {n_unused_recv[2]} ]
+set_property PACKAGE_PIN  AB44 [get_ports  {n_unused_recv[3]} ]
+set_property PACKAGE_PIN  AE45 [get_ports  {p_unused_recv[0]} ]
+set_property PACKAGE_PIN  AD43 [get_ports  {p_unused_recv[1]} ]
+set_property PACKAGE_PIN  AC45 [get_ports  {p_unused_recv[2]} ]
+set_property PACKAGE_PIN  AB43 [get_ports  {p_unused_recv[3]} ]
+#-----------------------------------------------
+
+#-----------------------------------------------
+# unused site quad 129  transmitters
+set_property PACKAGE_PIN  AE41 [get_ports  {n_unused_xmit[0]} ]
+set_property PACKAGE_PIN  AD39 [get_ports  {n_unused_xmit[1]} ]
+set_property PACKAGE_PIN  AC41 [get_ports  {n_unused_xmit[2]} ]
+set_property PACKAGE_PIN  AB39 [get_ports  {n_unused_xmit[3]} ]
+set_property PACKAGE_PIN  AE40 [get_ports  {p_unused_xmit[0]} ]
+set_property PACKAGE_PIN  AD38 [get_ports  {p_unused_xmit[1]} ]
+set_property PACKAGE_PIN  AC40 [get_ports  {p_unused_xmit[2]} ]
+set_property PACKAGE_PIN  AB38 [get_ports  {p_unused_xmit[3]} ]
 #-----------------------------------------------
 
 #-----------------------------------------------
