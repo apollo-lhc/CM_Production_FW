@@ -18,10 +18,10 @@ entity TCDS is
     readMISO             : out AXIreadMISO;
     writeMOSI            : in  AXIwriteMOSI;
     writeMISO            : out AXIwriteMISO;
-    DRP_readMOSI         : in  AXIreadMOSI;
-    DRP_readMISO         : out AXIreadMISO;
-    DRP_writeMOSI        : in  AXIwriteMOSI;
-    DRP_writeMISO        : out AXIwriteMISO;
+    --DRP_readMOSI         : in  AXIreadMOSI;
+    --DRP_readMISO         : out AXIreadMISO;
+    --DRP_writeMOSI        : in  AXIwriteMOSI;
+    --DRP_writeMISO        : out AXIwriteMISO;
 --    refclk0_p : in std_logic;
 --    refclk0_n : in std_logic;
 ----    refclk1_p : in std_logic;
@@ -30,13 +30,13 @@ entity TCDS is
 --    tx_n : out std_logic;
 --    rx_p : in  std_logic;
 --    rx_n : in  std_logic;
-    heater_output : out std_logic_vector(31 downto 0);
+    heater_output : out slv32_array_t(15 downto 0);
     TxRx_clk_sel : in std_logic := '0'); -- '0' for refclk0, std_logic' ('1') for refclk1
 
 end entity TCDS;
 
 architecture behavioral of TCDS is
-  signal heater_output_pl : std_logic_vector(31 downto 0);
+  signal heater_output_pl : slv32_array_t(15 downto 0);
   signal heater_enable : std_logic;
   signal heater_adjust : std_logic_vector(31 downto 0);
   signal heater_select : std_logic_vector(31 downto 0);
@@ -102,27 +102,43 @@ architecture behavioral of TCDS is
 begin  -- architecture TCDS
   reset <= not reset_axi_n;
 
+ gen_heater_1: for i in 0 to 7 generate
+   heater_1: entity  work.heater
+     generic map (
+       C_SLV_DWIDTH            => 32,
+       C_NUM_LUTS              => 4096--8192--32768--131072--65536
+       ) port map (
+         clk                     => clk_200,
+         reset                   => reset,
+         enable_heater           => heater_enable,
+         adjust_heaters          => heater_adjust,
+         read_which_heater       => heater_select,
+         heater_output           => heater_output_pl(i)
+         );
+ end generate gen_heater_1;
 
-  heater: entity  work.heater
-    generic map (
-      C_SLV_DWIDTH            => 32,
-      C_NUM_LUTS              => 65536--32768--65536--131072--65536
-      ) port map (
-        clk                     => clk_200,
-        reset                   => reset,
-        enable_heater           => heater_enable,
-        adjust_heaters          => heater_adjust,
-        read_which_heater       => heater_select,
-        heater_output           => heater_output_pl--Mon.Heater.Output
-        );
-
+  gen_heater_2: for i in 8 to 15 generate
+    heater_2: entity  work.heater
+      generic map (
+        C_SLV_DWIDTH            => 32,
+        C_NUM_LUTS              => 4096--8192--32768--131072--65536
+        ) port map (
+          clk                     => clk_200,
+          reset                   => reset,
+          enable_heater           => heater_enable,
+          adjust_heaters          => heater_adjust,
+          read_which_heater       => heater_select,
+          heater_output           => heater_output_pl(i)
+          );
+  end generate gen_heater_2;
+            
   data_proc: process (clk_200, reset) is
     begin  -- process data_proc
       if rising_edge(clk_200) then
         if (reset = '1') then
           heater_enable <= '0';
           heater_adjust <= (others=>'0');
-          heater_output <= (others => '0');
+          heater_output <= (others => (others => '0'));
           heater_select <= (others => '0');
         else
           heater_enable <= Ctrl.Heater.Enable;

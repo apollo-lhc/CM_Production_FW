@@ -6,7 +6,7 @@ source ../bd/Xilinx_AXI_slaves.tcl
 set bd_design_name "c2cSlave"
 create_bd_design -dir ./ ${bd_design_name}
 
-set EXT_CLK clk50Mhz
+#set EXT_CLK clk50Mhz
 set EXT_RESET reset_n
 
 set AXI_MASTER_CLK AXI_CLK
@@ -20,8 +20,8 @@ set AXI_INTERCONNECT_NAME slave_interconnect
 #================================================================================
 #  Setup external clock and reset
 #================================================================================
-create_bd_port -dir I -type clk $EXT_CLK
-set_property CONFIG.FREQ_HZ 50000000 [get_bd_ports ${EXT_CLK}]
+#create_bd_port -dir I -type clk $EXT_CLK
+#set_property CONFIG.FREQ_HZ 50000000 [get_bd_ports ${EXT_CLK}]
 create_bd_port -dir I -type rst $EXT_RESET
 
 
@@ -51,80 +51,80 @@ connect_bd_net [get_bd_ports $AXI_MASTER_RSTN] [get_bd_pins $SYS_RESETER_AXI_RST
 #================================================================================
 #  Configure chip 2 chip links
 #================================================================================
-set C2C C2CLink
-set C2C_PHY ${C2C}_phy
+# set C2C C2CLink
+# set C2C_PHY ${C2C}_phy
 
-#Create chip-2-chip ip core
-startgroup
-create_bd_cell -type ip -vlnv xilinx.com:ip:axi_chip2chip:5.0 $C2C
-set_property CONFIG.C_NUM_OF_IO {58.0}          [get_bd_cells ${C2C}]
-set_property CONFIG.C_INTERFACE_MODE {0}	[get_bd_cells ${C2C}]
-set_property CONFIG.C_MASTER_FPGA {0}		[get_bd_cells ${C2C}]
-set_property CONFIG.C_AURORA_WIDTH {1.0}        [get_bd_cells ${C2C}]
-set_property CONFIG.C_EN_AXI_LINK_HNDLR {false} [get_bd_cells ${C2C}]
-set_property CONFIG.C_AXI_STB_WIDTH     {4}     [get_bd_cells ${C2C}]
-set_property CONFIG.C_AXI_DATA_WIDTH    {32}    [get_bd_cells ${C2C}]
-set_property CONFIG.C_INTERFACE_TYPE {2}	[get_bd_cells ${C2C}]
-set_property CONFIG.C_INCLUDE_AXILITE {2}	[get_bd_cells ${C2C}]
+# #Create chip-2-chip ip core
+# startgroup
+# create_bd_cell -type ip -vlnv xilinx.com:ip:axi_chip2chip:5.0 $C2C
+# set_property CONFIG.C_NUM_OF_IO {58.0}          [get_bd_cells ${C2C}]
+# set_property CONFIG.C_INTERFACE_MODE {0}	[get_bd_cells ${C2C}]
+# set_property CONFIG.C_MASTER_FPGA {0}		[get_bd_cells ${C2C}]
+# set_property CONFIG.C_AURORA_WIDTH {1.0}        [get_bd_cells ${C2C}]
+# set_property CONFIG.C_EN_AXI_LINK_HNDLR {false} [get_bd_cells ${C2C}]
+# set_property CONFIG.C_AXI_STB_WIDTH     {4}     [get_bd_cells ${C2C}]
+# set_property CONFIG.C_AXI_DATA_WIDTH    {32}    [get_bd_cells ${C2C}]
+# set_property CONFIG.C_INTERFACE_TYPE {2}	[get_bd_cells ${C2C}]
+# set_property CONFIG.C_INCLUDE_AXILITE {2}	[get_bd_cells ${C2C}]
 
-make_bd_pins_external       -name ${C2C}_aurora_do_cc                [get_bd_pins ${C2C}/aurora_do_cc]
-make_bd_pins_external       -name ${C2C}_axi_c2c_config_error_out    [get_bd_pins ${C2C}/axi_c2c_config_error_out   ]  
-make_bd_pins_external       -name ${C2C}_axi_c2c_link_status_out     [get_bd_pins ${C2C}/axi_c2c_link_status_out    ]  
-make_bd_pins_external       -name ${C2C}_axi_c2c_multi_bit_error_out [get_bd_pins ${C2C}/axi_c2c_multi_bit_error_out]  
-make_bd_pins_external       -name ${C2C}_axi_c2c_link_error_out      [get_bd_pins ${C2C}/axi_c2c_link_error_out     ] 
-
-
-endgroup
-
-#create chip-2-chip aurora 
-startgroup
-create_bd_cell -type ip -vlnv xilinx.com:ip:aurora_64b66b:12.0 ${C2C_PHY}
-set_property CONFIG.C_INIT_CLK.VALUE_SRC PROPAGATED   [get_bd_cells ${C2C_PHY}]
-#set_property CONFIG.CHANNEL_ENABLE       {X0Y0}       [get_bd_cells ${C2C_PHY}]
-set_property CONFIG.C_AURORA_LANES       {1}	      [get_bd_cells ${C2C_PHY}]
-#set_property CONFIG.C_LINE_RATE          {10}	      [get_bd_cells ${C2C_PHY}]
-set_property CONFIG.C_LINE_RATE          {5}	      [get_bd_cells ${C2C_PHY}]
-set_property CONFIG.C_REFCLK_FREQUENCY   {200}	      [get_bd_cells ${C2C_PHY}]
-set_property CONFIG.C_GT_LOC_2           {X} 	      [get_bd_cells ${C2C_PHY}]
-set_property CONFIG.interface_mode       {Streaming}  [get_bd_cells ${C2C_PHY}]
-set_property CONFIG.SupportLevel         {1}          [get_bd_cells ${C2C_PHY}]
-set_property CONFIG.C_USE_CHIPSCOPE      {true}       [get_bd_cells ${C2C_PHY}]
-
-#expose debugging signals to top
-make_bd_pins_external       -name ${C2C_PHY}_power_down     [get_bd_pins ${C2C_PHY}/power_down]
-make_bd_pins_external       -name ${C2C_PHY}_gt_pll_lock    [get_bd_pins ${C2C_PHY}/gt_pll_lock]       
-make_bd_pins_external       -name ${C2C_PHY}_hard_err       [get_bd_pins ${C2C_PHY}/hard_err]  
-make_bd_pins_external       -name ${C2C_PHY}_soft_err       [get_bd_pins ${C2C_PHY}/soft_err]  
-make_bd_pins_external       -name ${C2C_PHY}_lane_up        [get_bd_pins ${C2C_PHY}/lane_up]   
-make_bd_pins_external       -name ${C2C_PHY}_mmcm_not_locked_out  [get_bd_pins ${C2C_PHY}/mmcm_not_locked_out] 
-make_bd_pins_external       -name ${C2C_PHY}_link_reset_out [get_bd_pins ${C2C_PHY}/link_reset_out]      
-
-#connect C2C core with the C2C-mode Auroroa core
-connect_bd_intf_net [get_bd_intf_pins ${C2C}/AXIS_TX] [get_bd_intf_pins ${C2C_PHY}/USER_DATA_S_AXIS_TX]
-connect_bd_intf_net [get_bd_intf_pins ${C2C_PHY}/USER_DATA_M_AXIS_RX] [get_bd_intf_pins ${C2C}/AXIS_RX]
-connect_bd_net [get_bd_pins ${C2C_PHY}/user_clk_out]        [get_bd_pins ${C2C}/axi_c2c_phy_clk]
-connect_bd_net [get_bd_pins ${C2C_PHY}/channel_up]          [get_bd_pins ${C2C}/axi_c2c_aurora_channel_up]
-connect_bd_net [get_bd_pins ${C2C_PHY}/mmcm_not_locked_out] [get_bd_pins ${C2C}/aurora_mmcm_not_locked]
-connect_bd_net [get_bd_pins ${C2C}/aurora_pma_init_out]     [get_bd_pins ${C2C_PHY}/pma_init]
-connect_bd_net [get_bd_pins ${C2C}/aurora_reset_pb]         [get_bd_pins ${C2C_PHY}/reset_pb]
-
-#expose the Aurora core signals to top
-make_bd_intf_pins_external  -name ${C2C_PHY}_refclk [get_bd_intf_pins ${C2C_PHY}/GT_DIFF_REFCLK1]
-make_bd_intf_pins_external  -name ${C2C_PHY}_Rx     [get_bd_intf_pins ${C2C_PHY}/GT_SERIAL_RX]
-make_bd_intf_pins_external  -name ${C2C_PHY}_Tx     [get_bd_intf_pins ${C2C_PHY}/GT_SERIAL_TX]
-
-#connect external 200Mhz clock to init clocks
-connect_bd_net [get_bd_ports $EXT_CLK]   [get_bd_pins ${C2C_PHY}/init_clk]  
-connect_bd_net [get_bd_ports $EXT_CLK]   [get_bd_pins ${C2C}/aurora_init_clk]
+# make_bd_pins_external       -name ${C2C}_aurora_do_cc                [get_bd_pins ${C2C}/aurora_do_cc]
+# make_bd_pins_external       -name ${C2C}_axi_c2c_config_error_out    [get_bd_pins ${C2C}/axi_c2c_config_error_out   ]  
+# make_bd_pins_external       -name ${C2C}_axi_c2c_link_status_out     [get_bd_pins ${C2C}/axi_c2c_link_status_out    ]  
+# make_bd_pins_external       -name ${C2C}_axi_c2c_multi_bit_error_out [get_bd_pins ${C2C}/axi_c2c_multi_bit_error_out]  
+# make_bd_pins_external       -name ${C2C}_axi_c2c_link_error_out      [get_bd_pins ${C2C}/axi_c2c_link_error_out     ] 
 
 
-#connect resets
-#connect_bd_net [get_bd_pins   ${C2C}/m_aresetn] [get_bd_pins sys_reseter/interconnect_aresetn]
-connect_bd_net [get_bd_pins   ${C2C}/m_aresetn] [get_bd_pins ${AXI_MASTER_RSTN}]
-connect_bd_net [get_bd_ports ${AXI_MASTER_CLK}] [get_bd_pins ${C2C}/m_aclk]
-connect_bd_net [get_bd_ports ${AXI_MASTER_CLK}] [get_bd_pins ${C2C}/m_axi_lite_aclk]
+# endgroup
 
-endgroup
+# #create chip-2-chip aurora 
+# startgroup
+# create_bd_cell -type ip -vlnv xilinx.com:ip:aurora_64b66b:12.0 ${C2C_PHY}
+# set_property CONFIG.C_INIT_CLK.VALUE_SRC PROPAGATED   [get_bd_cells ${C2C_PHY}]
+# #set_property CONFIG.CHANNEL_ENABLE       {X0Y0}       [get_bd_cells ${C2C_PHY}]
+# set_property CONFIG.C_AURORA_LANES       {1}	      [get_bd_cells ${C2C_PHY}]
+# #set_property CONFIG.C_LINE_RATE          {10}	      [get_bd_cells ${C2C_PHY}]
+# set_property CONFIG.C_LINE_RATE          {5}	      [get_bd_cells ${C2C_PHY}]
+# set_property CONFIG.C_REFCLK_FREQUENCY   {200}	      [get_bd_cells ${C2C_PHY}]
+# set_property CONFIG.C_GT_LOC_2           {X} 	      [get_bd_cells ${C2C_PHY}]
+# set_property CONFIG.interface_mode       {Streaming}  [get_bd_cells ${C2C_PHY}]
+# set_property CONFIG.SupportLevel         {1}          [get_bd_cells ${C2C_PHY}]
+# set_property CONFIG.C_USE_CHIPSCOPE      {true}       [get_bd_cells ${C2C_PHY}]
+
+# #expose debugging signals to top
+# make_bd_pins_external       -name ${C2C_PHY}_power_down     [get_bd_pins ${C2C_PHY}/power_down]
+# make_bd_pins_external       -name ${C2C_PHY}_gt_pll_lock    [get_bd_pins ${C2C_PHY}/gt_pll_lock]       
+# make_bd_pins_external       -name ${C2C_PHY}_hard_err       [get_bd_pins ${C2C_PHY}/hard_err]  
+# make_bd_pins_external       -name ${C2C_PHY}_soft_err       [get_bd_pins ${C2C_PHY}/soft_err]  
+# make_bd_pins_external       -name ${C2C_PHY}_lane_up        [get_bd_pins ${C2C_PHY}/lane_up]   
+# make_bd_pins_external       -name ${C2C_PHY}_mmcm_not_locked_out  [get_bd_pins ${C2C_PHY}/mmcm_not_locked_out] 
+# make_bd_pins_external       -name ${C2C_PHY}_link_reset_out [get_bd_pins ${C2C_PHY}/link_reset_out]      
+
+# #connect C2C core with the C2C-mode Auroroa core
+# connect_bd_intf_net [get_bd_intf_pins ${C2C}/AXIS_TX] [get_bd_intf_pins ${C2C_PHY}/USER_DATA_S_AXIS_TX]
+# connect_bd_intf_net [get_bd_intf_pins ${C2C_PHY}/USER_DATA_M_AXIS_RX] [get_bd_intf_pins ${C2C}/AXIS_RX]
+# connect_bd_net [get_bd_pins ${C2C_PHY}/user_clk_out]        [get_bd_pins ${C2C}/axi_c2c_phy_clk]
+# connect_bd_net [get_bd_pins ${C2C_PHY}/channel_up]          [get_bd_pins ${C2C}/axi_c2c_aurora_channel_up]
+# connect_bd_net [get_bd_pins ${C2C_PHY}/mmcm_not_locked_out] [get_bd_pins ${C2C}/aurora_mmcm_not_locked]
+# connect_bd_net [get_bd_pins ${C2C}/aurora_pma_init_out]     [get_bd_pins ${C2C_PHY}/pma_init]
+# connect_bd_net [get_bd_pins ${C2C}/aurora_reset_pb]         [get_bd_pins ${C2C_PHY}/reset_pb]
+
+# #expose the Aurora core signals to top
+# make_bd_intf_pins_external  -name ${C2C_PHY}_refclk [get_bd_intf_pins ${C2C_PHY}/GT_DIFF_REFCLK1]
+# make_bd_intf_pins_external  -name ${C2C_PHY}_Rx     [get_bd_intf_pins ${C2C_PHY}/GT_SERIAL_RX]
+# make_bd_intf_pins_external  -name ${C2C_PHY}_Tx     [get_bd_intf_pins ${C2C_PHY}/GT_SERIAL_TX]
+
+# #connect external 200Mhz clock to init clocks
+# connect_bd_net [get_bd_ports $EXT_CLK]   [get_bd_pins ${C2C_PHY}/init_clk]  
+# connect_bd_net [get_bd_ports $EXT_CLK]   [get_bd_pins ${C2C}/aurora_init_clk]
+
+
+# #connect resets
+# #connect_bd_net [get_bd_pins   ${C2C}/m_aresetn] [get_bd_pins sys_reseter/interconnect_aresetn]
+# connect_bd_net [get_bd_pins   ${C2C}/m_aresetn] [get_bd_pins ${AXI_MASTER_RSTN}]
+# connect_bd_net [get_bd_ports ${AXI_MASTER_CLK}] [get_bd_pins ${C2C}/m_aclk]
+# connect_bd_net [get_bd_ports ${AXI_MASTER_CLK}] [get_bd_pins ${C2C}/m_axi_lite_aclk]
+
+# endgroup
 
 #================================================================================
 #  Create JTAG AXI Master
@@ -135,31 +135,35 @@ set JTAG_AXI_MASTER JTAG_AXI_Master
 #================================================================================
 #  Connect C2C master port to interconnect slave port
 #================================================================================
-set mAXI [list ${C2C}/m_axi ${C2C}/m_axi_lite ${JTAG_AXI_MASTER}/M_AXI]
-set mCLK [list ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK} ]
-set mRST [list ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN}] 
+# set mAXI [list ${C2C}/m_axi ${C2C}/m_axi_lite ${JTAG_AXI_MASTER}/M_AXI]
+# set mCLK [list ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK} ]
+# set mRST [list ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN}] 
+set mAXI [list ${JTAG_AXI_MASTER}/M_AXI]
+set mCLK [list ${AXI_MASTER_CLK}]
+set mRST [list ${AXI_MASTER_RSTN}]
+
 [BUILD_AXI_INTERCONNECT $AXI_INTERCONNECT_NAME ${AXI_MASTER_CLK} $AXI_MASTER_RSTN $mAXI $mCLK $mRST]
 
 
     #############################################################################
     ### ibert testing
-    set ibert_name ${C2C_PHY}_ibert
-    create_bd_cell -type ip -vlnv xilinx.com:ip:in_system_ibert:1.0 ${ibert_name}
-#    set_property -dict [list CONFIG.C_GTS_USED { X0Y0 X0Y1} CONFIG.C_ENABLE_INPUT_PORTS {false}] [get_bd_cells ${ibert_name}]
-    #modify ${C2C_PHY}
-    set_property -dict [list CONFIG.drp_mode {Native}] [get_bd_cells ${C2C_PHY}]
-    set_property -dict [list CONFIG.TransceiverControl {true}] [get_bd_cells ${C2C_PHY}]
+#     set ibert_name ${C2C_PHY}_ibert
+#     create_bd_cell -type ip -vlnv xilinx.com:ip:in_system_ibert:1.0 ${ibert_name}
+# #    set_property -dict [list CONFIG.C_GTS_USED { X0Y0 X0Y1} CONFIG.C_ENABLE_INPUT_PORTS {false}] [get_bd_cells ${ibert_name}]
+#     #modify ${C2C_PHY}
+#     set_property -dict [list CONFIG.drp_mode {Native}] [get_bd_cells ${C2C_PHY}]
+#     set_property -dict [list CONFIG.TransceiverControl {true}] [get_bd_cells ${C2C_PHY}]
 
-    #connect up the ibert
-    connect_bd_net [get_bd_ports clk50Mhz] [get_bd_pins ${ibert_name}/clk]
-    connect_bd_intf_net [get_bd_intf_pins ${ibert_name}/GT0_DRP] [get_bd_intf_pins ${C2C_PHY}/GT0_DRP]
-    connect_bd_net [get_bd_pins ${ibert_name}/eyescanreset_o] [get_bd_pins ${C2C_PHY}/gt_eyescanreset]
-    connect_bd_net [get_bd_pins ${ibert_name}/rxrate_o] [get_bd_pins ${C2C_PHY}/gt_rxrate]
-    connect_bd_net [get_bd_pins ${ibert_name}/txdiffctrl_o] [get_bd_pins ${C2C_PHY}/gt_txdiffctrl]
-    connect_bd_net [get_bd_pins ${ibert_name}/txprecursor_o] [get_bd_pins ${C2C_PHY}/gt_txprecursor]
-    connect_bd_net [get_bd_pins ${ibert_name}/txpostcursor_o] [get_bd_pins ${C2C_PHY}/gt_txpostcursor]
-    connect_bd_net [get_bd_pins ${ibert_name}/rxlpmen_o] [get_bd_pins ${C2C_PHY}/gt_rxlpmen]
-    connect_bd_net [get_bd_pins ${C2C_PHY}/user_clk_out] [get_bd_pins ${ibert_name}/rxoutclk_i]
+#     #connect up the ibert
+#     connect_bd_net [get_bd_ports clk50Mhz] [get_bd_pins ${ibert_name}/clk]
+#     connect_bd_intf_net [get_bd_intf_pins ${ibert_name}/GT0_DRP] [get_bd_intf_pins ${C2C_PHY}/GT0_DRP]
+#     connect_bd_net [get_bd_pins ${ibert_name}/eyescanreset_o] [get_bd_pins ${C2C_PHY}/gt_eyescanreset]
+#     connect_bd_net [get_bd_pins ${ibert_name}/rxrate_o] [get_bd_pins ${C2C_PHY}/gt_rxrate]
+#     connect_bd_net [get_bd_pins ${ibert_name}/txdiffctrl_o] [get_bd_pins ${C2C_PHY}/gt_txdiffctrl]
+#     connect_bd_net [get_bd_pins ${ibert_name}/txprecursor_o] [get_bd_pins ${C2C_PHY}/gt_txprecursor]
+#     connect_bd_net [get_bd_pins ${ibert_name}/txpostcursor_o] [get_bd_pins ${C2C_PHY}/gt_txpostcursor]
+#     connect_bd_net [get_bd_pins ${ibert_name}/rxlpmen_o] [get_bd_pins ${C2C_PHY}/gt_rxlpmen]
+#     connect_bd_net [get_bd_pins ${C2C_PHY}/user_clk_out] [get_bd_pins ${ibert_name}/rxoutclk_i]
     #############################################################################
 
 
@@ -171,12 +175,15 @@ set mRST [list ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN}]
 
 #expose the interconnect's axi master port for an axi slave
 puts "Adding user slaves"
-[AXI_IP_SYS_MGMT VIRTEX_SYS_MGMT  ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} 50000000 0x83D42000 4K 0]
-[AXI_PL_DEV_CONNECT IPBUS_VIRTEX  ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} 50000000 0x8C000000 32M]
+#[AXI_IP_SYS_MGMT VIRTEX_SYS_MGMT  ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} 50000000 0x83D42000 4K 0]
+[AXI_IP_SYS_MGMT VIRTEX_SYS_MGMT  ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} 50000000 0x83D41000 4K 0]
+set_property -dict [list CONFIG.SERIAL_INTERFACE {Enable_PMBus} CONFIG.ENABLE_I2C_SLAVE {true} CONFIG.CHANNEL_ENABLE_VUSER0_SLAVE0_SSIT {true} CONFIG.Enable_Slave0 {true}] [get_bd_cells VIRTEX_SYS_MGMT]
 
-#[AXI_PL_DEV_CONNECT MYVREG0        ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} 50000000 0x83D40000 4K]
-[AXI_PL_DEV_CONNECT VIRTEX_TCDS    ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} 50000000 0x83D41000 4K]
-[AXI_PL_DEV_CONNECT VIRTEX_TCDS_DRP ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} 50000000 0x83D40000 4K]
+#[AXI_PL_DEV_CONNECT IPBUS_VIRTEX  ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} 50000000 0x8C000000 32M]
+
+[AXI_PL_DEV_CONNECT VIRTEX_TCDS    ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} 50000000 0x83D40000 4K]
+#[AXI_PL_DEV_CONNECT VIRTEX_TCDS    ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} 50000000 0x83D41000 4K]
+#[AXI_PL_DEV_CONNECT VIRTEX_TCDS_DRP ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} 50000000 0x83D40000 4K]
 
 [AXI_PL_DEV_CONNECT CM_V_INFO      ${AXI_INTERCONNECT_NAME} ${AXI_MASTER_CLK} ${AXI_MASTER_RSTN} 50000000 0x83D43000 4K]
 
