@@ -7,7 +7,7 @@ OUTPUT_MARKUP= 2>&1 | tee ../make_log.txt #| ccze -A
 #################################################################################
 # VIVADO stuff
 #################################################################################
-VIVADO_VERSION=2018.2
+VIVADO_VERSION=2019.2
 VIVADO_FLAGS=-notrace -mode batch
 # -stack 10000
 VIVADO_SHELL="/nfs/opt/Xilinx/Vivado/"$(VIVADO_VERSION)"/settings64.sh"
