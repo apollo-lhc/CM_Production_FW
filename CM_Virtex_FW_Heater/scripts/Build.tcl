@@ -38,6 +38,7 @@ write_checkpoint -force $outputDir/post_synth
 # STEP#3: run placement and logic optimization, report utilization and timing
 # estimates, write checkpoint design
 #################################################################################
+#Rui
 opt_design
 power_opt_design
 place_design

@@ -8,8 +8,9 @@ set bd_files "\
 
 set vhdl_files "\
      ../CM_Common_FW/heater/lut_oscilator.vhd \
-     ../CM_Common_FW/heater/heater/heater.vhd \
+     ../CM_Common_FW/heater/heater.vhd \
      src/top.vhd \
+     src/example_ibert_ultrascale_gth_0.vhd \
      ../CM_Common_FW/misc/pass_time_domain.vhd \
      ../CM_Common_FW/misc/pacd.vhd \
      ../CM_Common_FW/misc/types.vhd \
@@ -33,14 +34,19 @@ set vhdl_files "\
 set xdc_files "\
     src/top_pins.xdc \
     src/top_timing.xdc	\
+    src/heater_constraint.xdc \
+    src/ku_example_ibert_ultrascale_gth_0.xdc  \
+    src/ku_ibert_ultrascale_gth_ip_example.xdc  \
+    src/ku_ibert_ultrascale_gty_0.xdc  \
+    src/ku_ibert_ultrascale_gty_ip_example.xdc  \
     "	    
 
 set xci_files "\
     	      cores/Local_Clocking/Local_Clocking.xci \
     	      cores/TCDS_TxRx/TCDS_TxRx.xci  \
 	      cores/TCDS_DRP/TCDS_DRP.xci \
-	      cores/AXI_BRAM/AXI_BRAM.xci \
-	      cores/DP_BRAM/DP_BRAM.xci \
+              cores/ibert_ultrascale_gth_0/ibert_ultrascale_gth_0.xci \
+              cores/ibert_ultrascale_gty_0/ibert_ultrascale_gty_0.xci \
     	      "
 
 #DRP ip

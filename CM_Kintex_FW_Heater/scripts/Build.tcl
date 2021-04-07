@@ -38,10 +38,11 @@ write_checkpoint -force $outputDir/post_synth
 # STEP#3: run placement and logic optimization, report utilization and timing
 # estimates, write checkpoint design
 #################################################################################
-opt_design
+#opt_design
+opt_design -retarget -propconst -bram_power_opt
 power_opt_design
 place_design
-phys_opt_design
+#phys_opt_design
 #write_checkpoint -force $outputDir/post_place
 #report_timing_summary -file $outputDir/post_place_timing_summary.rpt
 
