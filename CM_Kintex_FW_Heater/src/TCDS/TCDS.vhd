@@ -18,24 +18,28 @@ entity TCDS is
     readMISO             : out AXIreadMISO;
     writeMOSI            : in  AXIwriteMOSI;
     writeMISO            : out AXIwriteMISO;
-    DRP_readMOSI         : in  AXIreadMOSI;
-    DRP_readMISO         : out AXIreadMISO;
-    DRP_writeMOSI        : in  AXIwriteMOSI;
-    DRP_writeMISO        : out AXIwriteMISO;
-    refclk0_p : in std_logic;
-    refclk0_n : in std_logic;
-    refclk1_p : in std_logic;
-    refclk1_n : in std_logic; 
-    tx_p : out std_logic;
-    tx_n : out std_logic;
-    rx_p : in  std_logic;
-    rx_n : in  std_logic;
-    heater_output : out std_logic_vector(31 downto 0);
+    --DRP_readMOSI         : in  AXIreadMOSI;
+    --DRP_readMISO         : out AXIreadMISO;
+    --DRP_writeMOSI        : in  AXIwriteMOSI;
+    --DRP_writeMISO        : out AXIwriteMISO;
+    --refclk0_p : in std_logic;
+    --refclk0_n : in std_logic;
+    --refclk1_p : in std_logic;
+    --refclk1_n : in std_logic; 
+    --tx_p : out std_logic;
+    --tx_n : out std_logic;
+    --rx_p : in  std_logic;
+    --rx_n : in  std_logic;
+    heater_output :  out slv32_array_t(7 downto 0);
     TxRx_clk_sel : in std_logic := '0'); -- '0' for refclk0, '1' for refclk1
 
 end entity TCDS;
 
 architecture behavioral of TCDS is
+  signal heater_output_pl : slv32_array_t(7 downto 0);
+  signal heater_enable : std_logic;
+  signal heater_adjust : std_logic_vector(31 downto 0);
+  signal heater_select : std_logic_vector(31 downto 0);
   signal reset : std_logic;
   signal refclk : std_logic;
   signal refclk0 : std_logic;
@@ -78,65 +82,111 @@ architecture behavioral of TCDS is
 begin  -- architecture TCDS
   reset <= not reset_axi_n;
 
-  heater: entity  work.heater
-    generic map (
-      C_SLV_DWIDTH            => 32,
-      C_NUM_LUTS              => 65536--131072--65536
-      ) port map (
-        clk                     => clk_200,
-        reset                   => reset,
-        enable_heater           => Ctrl.Heater.Enable,
-        adjust_heaters          => Ctrl.Heater.Adjust,
-        read_which_heater       => Ctrl.Heater.SelectHeater,
-        heater_output           => heater_output--Mon.Heater.Output
-      );
-                  
-  
-  reflk_buf : IBUFDS_GTE4
-    generic map (
-      REFCLK_EN_TX_PATH => '0',
-      REFCLK_HROW_CK_SEL => "00",
-      REFCLK_ICNTL_RX    => "00")
-    port map (
-      I     => refclk0_p,        
-      IB    => refclk0_n,
-      CEB   => '0',
-      O     => refclk0,  
-      ODIV2 => open);
+--  heater: entity  work.heater
+--    generic map (
+--      C_SLV_DWIDTH            => 32,
+--      C_NUM_LUTS              => 65536--131072--65536
+--      ) port map (
+--        clk                     => clk_200,
+--        reset                   => reset,
+--        enable_heater           => Ctrl.Heater.Enable,
+--        adjust_heaters          => Ctrl.Heater.Adjust,
+--        read_which_heater       => Ctrl.Heater.SelectHeater,
+--        heater_output           => heater_output--Mon.Heater.Output
+--      );
+  gen_heater_1: for i in 0 to 7 generate
+   heater_1: entity  work.heater
+     generic map (
+       C_SLV_DWIDTH            => 32,
+       C_NUM_LUTS              => 4096--8192--32768--131072--65536
+       ) port map (
+         clk                     => clk_200,
+         reset                   => reset,
+         enable_heater           => heater_enable,
+         adjust_heaters          => heater_adjust,
+         read_which_heater       => heater_select,
+         heater_output           => heater_output_pl(i)
+         );
+ end generate gen_heater_1;
 
-  reflk1_buf : IBUFDS_GTE4
-    generic map (
-      REFCLK_EN_TX_PATH => '0',
-      REFCLK_HROW_CK_SEL => "00",
-      REFCLK_ICNTL_RX    => "00")
-    port map (
-      I     => refclk1_p,
-      IB    => refclk1_n,
-      CEB   => '0',
-      O     => refclk1,
-      ODIV2 => open);
+--  gen_heater_2: for i in 8 to 15 generate
+--    heater_2: entity  work.heater
+--      generic map (
+--        C_SLV_DWIDTH            => 32,
+--        C_NUM_LUTS              => 4096--8192--32768--131072--65536
+--        ) port map (
+--          clk                     => clk_200,
+--          reset                   => reset,
+--          enable_heater           => heater_enable,
+--          adjust_heaters          => heater_adjust,
+--          read_which_heater       => heater_select,
+--          heater_output           => heater_output_pl(i)
+--          );
+--  end generate gen_heater_2;
+            
+  data_proc_heater: process (clk_200, reset) is
+    begin  -- process data_proc
+      if rising_edge(clk_200) then
+        if (reset = '1') then
+          heater_enable <= '0';
+          heater_adjust <= (others=>'0');
+          heater_output <= (others => (others => '0'));
+          heater_select <= (others => '0');
+        else
+          heater_enable <= Ctrl.Heater.Enable;
+          heater_adjust <= Ctrl.Heater.Adjust;
+          heater_output <= heater_output_pl;
+          heater_select <= Ctrl.Heater.SelectHeater;
+        end if;
+      end if;
+    end process data_proc_heater;
+                
+  
+--  reflk_buf : IBUFDS_GTE4
+--    generic map (
+--      REFCLK_EN_TX_PATH => '0',
+--      REFCLK_HROW_CK_SEL => "00",
+--      REFCLK_ICNTL_RX    => "00")
+--    port map (
+--      I     => refclk0_p,        
+--      IB    => refclk0_n,
+--      CEB   => '0',
+--      O     => refclk0,  
+--      ODIV2 => open);
+
+--  reflk1_buf : IBUFDS_GTE4
+--    generic map (
+--      REFCLK_EN_TX_PATH => '0',
+--      REFCLK_HROW_CK_SEL => "00",
+--      REFCLK_ICNTL_RX    => "00")
+--    port map (
+--      I     => refclk1_p,
+--      IB    => refclk1_n,
+--      CEB   => '0',
+--      O     => refclk1,
+--      ODIV2 => open);
     
-  --Convert QPLL clock to tx clocks
-  --BUFG_GT
-  clk_tx_int_buf : BUFG_GT
-    port map (
-      CE      => '1',
-      CEMASK  => '0',
-      CLR     => '0',
-      CLRMASK => '0',
-      DIV     => "000",
-      I       => clk_tx_int_raw,
-      O       => clk_tx_int);
+--  --Convert QPLL clock to tx clocks
+--  --BUFG_GT
+--  clk_tx_int_buf : BUFG_GT
+--    port map (
+--      CE      => '1',
+--      CEMASK  => '0',
+--      CLR     => '0',
+--      CLRMASK => '0',
+--      DIV     => "000",
+--      I       => clk_tx_int_raw,
+--      O       => clk_tx_int);
     
-  clk_rx_int_buf : BUFG_GT
-    port map (
-      CE      => '1',
-      CEMASK  => '0',
-      CLR     => '0',
-      CLRMASK => '0',
-      DIV     => "000",
-      I       => clk_rx_int_raw,
-      O       => clk_rx_int);
+--  clk_rx_int_buf : BUFG_GT
+--    port map (
+--      CE      => '1',
+--      CEMASK  => '0',
+--      CLR     => '0',
+--      CLRMASK => '0',
+--      DIV     => "000",
+--      I       => clk_rx_int_raw,
+--      O       => clk_rx_int);
 
 
   TCDS_interface_1: entity work.Kintex_TCDS_interface
@@ -150,189 +200,189 @@ begin  -- architecture TCDS
       Mon             => Mon,
       Ctrl            => Ctrl);
 
-  refclk <= refclk1 when TxRx_clk_sel = '1' else refclk0;
+--  refclk <= refclk1 when TxRx_clk_sel = '1' else refclk0;
   
-  TCDS_TxRx_2: entity work.TCDS_TxRx
-    port map (
-      gtwiz_userclk_tx_active_in            => "1",
-      gtwiz_userclk_rx_active_in            => "1",
-      gtwiz_reset_clk_freerun_in(0)         => clk_axi,
-      gtwiz_reset_all_in(0)                 => Ctrl.RESETS.RESET_ALL,
-      gtwiz_reset_tx_pll_and_datapath_in(0) => Ctrl.RESETS.TX_PLL_DATAPATH,
-      gtwiz_reset_tx_datapath_in(0)         => Ctrl.RESETS.TX_DATAPATH,
-      gtwiz_reset_rx_pll_and_datapath_in(0) => Ctrl.RESETS.RX_PLL_DATAPATH,
-      gtwiz_reset_rx_datapath_in(0)         => Ctrl.RESETS.RX_DATAPATH,
-      gtwiz_reset_rx_cdr_stable_out(0)      => Mon.CLOCKING.RX_CDR_STABLE,
-      gtwiz_reset_tx_done_out(0)            => Mon.RESETS.TX_RESET_DONE,
-      gtwiz_reset_rx_done_out(0)            => Mon.RESETS.RX_RESET_DONE,
-      gtwiz_userdata_tx_in               => tx_data,
-      gtwiz_userdata_rx_out              => rx_data,    
-      gtrefclk01_in(0)                   => refclk,
---      qpll0clk_in(0)                     => qpll0outclk,
-      qpll1outclk_out(0)                 => qpll0outclk,
---      qpll0refclk_in(0)                  => qpll0refclk,
-      qpll1outrefclk_out(0)              => qpll0refclk,
-      drpaddr_in                         => drp_intf.addr,
-      drpclk_in(0)                       => clk_axi,
-      drpdi_in                           => drp_intf.di,
-      drpen_in(0)                        => drp_intf.en,
-      drpwe_in(0)                        => drp_intf.we,
-      eyescanreset_in(0)                 => Ctrl.EYESCAN.RESET,
-      eyescantrigger_in(0)               => Ctrl.EYESCAN.TRIGGER,
-      gthrxn_in(0)                       => rx_n,
-      gthrxp_in(0)                       => rx_p,
-      loopback_in                        => CTRL.LOOPBACK,
-      rx8b10ben_in                       => "1",
-      rxcommadeten_in                    => "1",
-      rxlpmen_in                         => "X",
-      rxmcommaalignen_in                 => "1",
-      rxpcommaalignen_in                 => "1",
-      rxprbscntreset_in(0)               => Ctrl.RX.PRBS_RESET,
-      rxprbssel_in                       => Ctrl.RX.PRBS_SEL,
-      rxrate_in                          => "000",
-      rxusrclk_in(0)                     => clk_rx_int,
-      rxusrclk2_in(0)                    => clk_rx_int,
-      tx8b10ben_in                       => "1",
-      txctrl0_in                         => x"0000",
-      txctrl1_in                         => x"0000",
-      txctrl2_in( 3 downto  0)           => tx_k_data,
-      txctrl2_in( 7 downto  4)           => (others => '0'),
-      txdiffctrl_in                      => (others => 'X'),
-      txinhibit_in(0)                    => Ctrl.TX.INHIBIT,
-      txpostcursor_in                    => (others => 'X'),
-      txprbsforceerr_in(0)               => Ctrl.TX.PRBS_FORCE_ERROR,
-      txprbssel_in                       => Ctrl.TX.PRBS_SEL,
-      txprecursor_in                     => (others => 'X'),
-      txusrclk_in(0)                     => clk_tx_int,
-      txusrclk2_in(0)                    => clk_tx_int,
-      drpdo_out                          => drp_intf.do,
-      drprdy_out(0)                      => drp_intf.rdy,
-      gthtxn_out(0)                      => tx_n,
-      gthtxp_out(0)                      => tx_p,
-      gtpowergood_out(0)                 => Mon.CLOCKING.POWER_GOOD,
-      rxbyteisaligned_out                => open,
-      rxbyterealign_out                  => open,
-      rxcommadet_out                     => open,
-      rxctrl0_out( 3 downto  0)          => rx_k_data,
-      rxctrl0_out(15 downto  4)          => open,
-      rxctrl1_out( 3 downto  0)          => Mon.RX.DISP_ERROR,
-      rxctrl1_out(15 downto  4)          => open,
-      rxctrl2_out                        => open,
-      rxctrl3_out( 3 downto  0)          => Mon.RX.BAD_CHAR,
-      rxctrl3_out( 7 downto  4)          => open,
-      rxdata_out                         => open, 
-      rxoutclk_out(0)                    => clk_rx_int_raw,
-      rxpmaresetdone_out(0)              => Mon.RESETS.RX_PMA_RESET_DONE,
-      txoutclk_out(0)                    => clk_tx_int_raw,
-      txpmaresetdone_out(0)              => Mon.RESETS.TX_PMA_RESET_DONE);
+--  TCDS_TxRx_2: entity work.TCDS_TxRx
+--    port map (
+--      gtwiz_userclk_tx_active_in            => "1",
+--      gtwiz_userclk_rx_active_in            => "1",
+--      gtwiz_reset_clk_freerun_in(0)         => clk_axi,
+--      gtwiz_reset_all_in(0)                 => Ctrl.RESETS.RESET_ALL,
+--      gtwiz_reset_tx_pll_and_datapath_in(0) => Ctrl.RESETS.TX_PLL_DATAPATH,
+--      gtwiz_reset_tx_datapath_in(0)         => Ctrl.RESETS.TX_DATAPATH,
+--      gtwiz_reset_rx_pll_and_datapath_in(0) => Ctrl.RESETS.RX_PLL_DATAPATH,
+--      gtwiz_reset_rx_datapath_in(0)         => Ctrl.RESETS.RX_DATAPATH,
+--      gtwiz_reset_rx_cdr_stable_out(0)      => Mon.CLOCKING.RX_CDR_STABLE,
+--      gtwiz_reset_tx_done_out(0)            => Mon.RESETS.TX_RESET_DONE,
+--      gtwiz_reset_rx_done_out(0)            => Mon.RESETS.RX_RESET_DONE,
+--      gtwiz_userdata_tx_in               => tx_data,
+--      gtwiz_userdata_rx_out              => rx_data,    
+--      gtrefclk01_in(0)                   => refclk,
+----      qpll0clk_in(0)                     => qpll0outclk,
+--      qpll1outclk_out(0)                 => qpll0outclk,
+----      qpll0refclk_in(0)                  => qpll0refclk,
+--      qpll1outrefclk_out(0)              => qpll0refclk,
+--      drpaddr_in                         => drp_intf.addr,
+--      drpclk_in(0)                       => clk_axi,
+--      drpdi_in                           => drp_intf.di,
+--      drpen_in(0)                        => drp_intf.en,
+--      drpwe_in(0)                        => drp_intf.we,
+--      eyescanreset_in(0)                 => Ctrl.EYESCAN.RESET,
+--      eyescantrigger_in(0)               => Ctrl.EYESCAN.TRIGGER,
+--      gthrxn_in(0)                       => rx_n,
+--      gthrxp_in(0)                       => rx_p,
+--      loopback_in                        => CTRL.LOOPBACK,
+--      rx8b10ben_in                       => "1",
+--      rxcommadeten_in                    => "1",
+--      rxlpmen_in                         => "X",
+--      rxmcommaalignen_in                 => "1",
+--      rxpcommaalignen_in                 => "1",
+--      rxprbscntreset_in(0)               => Ctrl.RX.PRBS_RESET,
+--      rxprbssel_in                       => Ctrl.RX.PRBS_SEL,
+--      rxrate_in                          => "000",
+--      rxusrclk_in(0)                     => clk_rx_int,
+--      rxusrclk2_in(0)                    => clk_rx_int,
+--      tx8b10ben_in                       => "1",
+--      txctrl0_in                         => x"0000",
+--      txctrl1_in                         => x"0000",
+--      txctrl2_in( 3 downto  0)           => tx_k_data,
+--      txctrl2_in( 7 downto  4)           => (others => '0'),
+--      txdiffctrl_in                      => (others => 'X'),
+--      txinhibit_in(0)                    => Ctrl.TX.INHIBIT,
+--      txpostcursor_in                    => (others => 'X'),
+--      txprbsforceerr_in(0)               => Ctrl.TX.PRBS_FORCE_ERROR,
+--      txprbssel_in                       => Ctrl.TX.PRBS_SEL,
+--      txprecursor_in                     => (others => 'X'),
+--      txusrclk_in(0)                     => clk_tx_int,
+--      txusrclk2_in(0)                    => clk_tx_int,
+--      drpdo_out                          => drp_intf.do,
+--      drprdy_out(0)                      => drp_intf.rdy,
+--      gthtxn_out(0)                      => tx_n,
+--      gthtxp_out(0)                      => tx_p,
+--      gtpowergood_out(0)                 => Mon.CLOCKING.POWER_GOOD,
+--      rxbyteisaligned_out                => open,
+--      rxbyterealign_out                  => open,
+--      rxcommadet_out                     => open,
+--      rxctrl0_out( 3 downto  0)          => rx_k_data,
+--      rxctrl0_out(15 downto  4)          => open,
+--      rxctrl1_out( 3 downto  0)          => Mon.RX.DISP_ERROR,
+--      rxctrl1_out(15 downto  4)          => open,
+--      rxctrl2_out                        => open,
+--      rxctrl3_out( 3 downto  0)          => Mon.RX.BAD_CHAR,
+--      rxctrl3_out( 7 downto  4)          => open,
+--      rxdata_out                         => open, 
+--      rxoutclk_out(0)                    => clk_rx_int_raw,
+--      rxpmaresetdone_out(0)              => Mon.RESETS.RX_PMA_RESET_DONE,
+--      txoutclk_out(0)                    => clk_tx_int_raw,
+--      txpmaresetdone_out(0)              => Mon.RESETS.TX_PMA_RESET_DONE);
 
-  ----Monitoring Clock Synthesizer
-  count_txoutclk: entity work.counter_clock
-    port map (
-      clk0        => clk_200,
-      clk1        => clk_tx_int,
-      reset_sync  => reset,
-      count       => Mon.CLOCKING.COUNTS_TXOUTCLK
-      );
-  
-
-  TCDS_DRP_1: entity work.TCDS_DRP
-    port map (
-      AXI_aclk      => clk_axi,
-      AXI_aresetn   => reset_axi_n,
-      S_AXI_araddr  => DRP_readMOSI.address,
-      S_AXI_arready => DRP_readMISO.ready_for_address,
-      S_AXI_arvalid => DRP_readMOSI.address_valid,
-      S_AXI_arprot  => DRP_readMOSI.protection_type,
-      S_AXI_awaddr  => DRP_writeMOSI.address,
-      S_AXI_awready => DRP_writeMISO.ready_for_address,
-      S_AXI_awvalid => DRP_writeMOSI.address_valid,
-      S_AXI_awprot  => DRP_writeMOSI.protection_type,
-      S_AXI_bresp   => DRP_writeMISO.response,
-      S_AXI_bready  => DRP_writeMOSI.ready_for_response,
-      S_AXI_bvalid  => DRP_writeMISO.response_valid,
-      S_AXI_rdata   => DRP_readMISO.data,
-      S_AXI_rready  => DRP_readMOSI.ready_for_data,
-      S_AXI_rvalid  => DRP_readMISO.data_valid,
-      S_AXI_rresp   => DRP_readMISO.response,
-      S_AXI_wdata   => DRP_writeMOSI.data,
-      S_AXI_wready  => DRP_writeMISO.ready_for_data,
-      S_AXI_wvalid  => DRP_writeMOSI.data_valid,
-      S_AXI_wstrb   => DRP_writeMOSI.data_write_strobe,
-      drp0_en       => drp_intf.en,
-      drp0_we       => drp_intf.we,
-      drp0_addr     => drp_intf.addr,
-      drp0_di       => drp_intf.di,
-      drp0_do       => drp_intf.do,
-      drp0_rdy      => drp_intf.rdy);
-
-
-  pass_std_logic_vector_1: entity work.pass_std_logic_vector
-    generic map (
-      DATA_WIDTH => 4)
-    port map (
-      clk_in   => clk_axi,
-      clk_out  => clk_tx_int,
-      reset    => reset,
-      pass_in  => Ctrl.DEBUG.MODE,
-      pass_out => mode);
-
-  --pass fixed data to the txrx domain for sending
-  pass_std_logic_vector_2: entity work.pass_std_logic_vector
-    generic map (
-      DATA_WIDTH => 36)
-    port map (
-      clk_in   => clk_axi,
-      clk_out  => clk_tx_int,
-      reset    => reset,
-      pass_in(31 downto  0)  => Ctrl.DEBUG.FIXED_SEND_D,
-      pass_in(35 downto 32)  => Ctrl.DEBUG.FIXED_SEND_K,
-      pass_out(31 downto  0) => tx_data_fixed,
-      pass_out(35 downto 32) => tx_k_data_fixed);
+--  ----Monitoring Clock Synthesizer
+--  count_txoutclk: entity work.counter_clock
+--    port map (
+--      clk0        => clk_200,
+--      clk1        => clk_tx_int,
+--      reset_sync  => reset,
+--      count       => Mon.CLOCKING.COUNTS_TXOUTCLK
+--      );
   
 
-  --Capture rx data from the txrx domain via a capture pulse
-  pacd_1: entity work.pacd
-    port map (
-      iPulseA => Ctrl.DEBUG.CAPTURE,
-      iClkA   => clk_axi,
-      iRSTAn  => reset_axi_n,
-      iClkB   => clk_tx_int,
-      iRSTBn  => reset_axi_n,
-      oPulseB => capture_data);
-  capture_CDC_1: entity work.capture_CDC
-    generic map (
-      WIDTH => 36)
-    port map (
-      clkA               => clk_tx_int,
-      clkB               => clk_axi,
-      inA(31 downto  0)  => rx_data,
-      inA(35 downto 32)  => rx_k_data,
-      inA_valid          => capture_data,
-      outB(31 downto  0) => Mon.DEBUG.CAPTURE_D,
-      outB(35 downto 32) => Mon.DEBUG.CAPTURE_K,
-      outB_valid => open);
+--  TCDS_DRP_1: entity work.TCDS_DRP
+--    port map (
+--      AXI_aclk      => clk_axi,
+--      AXI_aresetn   => reset_axi_n,
+--      S_AXI_araddr  => DRP_readMOSI.address,
+--      S_AXI_arready => DRP_readMISO.ready_for_address,
+--      S_AXI_arvalid => DRP_readMOSI.address_valid,
+--      S_AXI_arprot  => DRP_readMOSI.protection_type,
+--      S_AXI_awaddr  => DRP_writeMOSI.address,
+--      S_AXI_awready => DRP_writeMISO.ready_for_address,
+--      S_AXI_awvalid => DRP_writeMOSI.address_valid,
+--      S_AXI_awprot  => DRP_writeMOSI.protection_type,
+--      S_AXI_bresp   => DRP_writeMISO.response,
+--      S_AXI_bready  => DRP_writeMOSI.ready_for_response,
+--      S_AXI_bvalid  => DRP_writeMISO.response_valid,
+--      S_AXI_rdata   => DRP_readMISO.data,
+--      S_AXI_rready  => DRP_readMOSI.ready_for_data,
+--      S_AXI_rvalid  => DRP_readMISO.data_valid,
+--      S_AXI_rresp   => DRP_readMISO.response,
+--      S_AXI_wdata   => DRP_writeMOSI.data,
+--      S_AXI_wready  => DRP_writeMISO.ready_for_data,
+--      S_AXI_wvalid  => DRP_writeMOSI.data_valid,
+--      S_AXI_wstrb   => DRP_writeMOSI.data_write_strobe,
+--      drp0_en       => drp_intf.en,
+--      drp0_we       => drp_intf.we,
+--      drp0_addr     => drp_intf.addr,
+--      drp0_di       => drp_intf.di,
+--      drp0_do       => drp_intf.do,
+--      drp0_rdy      => drp_intf.rdy);
+
+
+--  pass_std_logic_vector_1: entity work.pass_std_logic_vector
+--    generic map (
+--      DATA_WIDTH => 4)
+--    port map (
+--      clk_in   => clk_axi,
+--      clk_out  => clk_tx_int,
+--      reset    => reset,
+--      pass_in  => Ctrl.DEBUG.MODE,
+--      pass_out => mode);
+
+--  --pass fixed data to the txrx domain for sending
+--  pass_std_logic_vector_2: entity work.pass_std_logic_vector
+--    generic map (
+--      DATA_WIDTH => 36)
+--    port map (
+--      clk_in   => clk_axi,
+--      clk_out  => clk_tx_int,
+--      reset    => reset,
+--      pass_in(31 downto  0)  => Ctrl.DEBUG.FIXED_SEND_D,
+--      pass_in(35 downto 32)  => Ctrl.DEBUG.FIXED_SEND_K,
+--      pass_out(31 downto  0) => tx_data_fixed,
+--      pass_out(35 downto 32) => tx_k_data_fixed);
   
-  data_proc: process (clk_tx_int, reset) is
-  begin  -- process data_proc
-    if reset = '1' then               -- asynchronous reset (active high)
-      tx_data <= x"BCBCBCBC";
-      tx_k_data <= x"F";      
-    elsif clk_tx_int'event and clk_tx_int = '1' then  -- rising clock edge
-      case mode is
-        when x"0"  => 
-          tx_data <= rx_data;
-          tx_k_data <= rx_k_data;
-        when x"1" =>
-          tx_data <= x"BCBCBCBC";
-          tx_k_data <= x"F";
-        when x"2" =>
-          tx_data <= tx_data_fixed;
-          tx_k_data <= tx_k_data_fixed;
-        when others =>
-          tx_data <= x"BCBCBCBC";
-          tx_k_data <= x"F";
-      end case;
-    end if;
-  end process data_proc;
+
+--  --Capture rx data from the txrx domain via a capture pulse
+--  pacd_1: entity work.pacd
+--    port map (
+--      iPulseA => Ctrl.DEBUG.CAPTURE,
+--      iClkA   => clk_axi,
+--      iRSTAn  => reset_axi_n,
+--      iClkB   => clk_tx_int,
+--      iRSTBn  => reset_axi_n,
+--      oPulseB => capture_data);
+--  capture_CDC_1: entity work.capture_CDC
+--    generic map (
+--      WIDTH => 36)
+--    port map (
+--      clkA               => clk_tx_int,
+--      clkB               => clk_axi,
+--      inA(31 downto  0)  => rx_data,
+--      inA(35 downto 32)  => rx_k_data,
+--      inA_valid          => capture_data,
+--      outB(31 downto  0) => Mon.DEBUG.CAPTURE_D,
+--      outB(35 downto 32) => Mon.DEBUG.CAPTURE_K,
+--      outB_valid => open);
+  
+--  data_proc: process (clk_tx_int, reset) is
+--  begin  -- process data_proc
+--    if reset = '1' then               -- asynchronous reset (active high)
+--      tx_data <= x"BCBCBCBC";
+--      tx_k_data <= x"F";      
+--    elsif clk_tx_int'event and clk_tx_int = '1' then  -- rising clock edge
+--      case mode is
+--        when x"0"  => 
+--          tx_data <= rx_data;
+--          tx_k_data <= rx_k_data;
+--        when x"1" =>
+--          tx_data <= x"BCBCBCBC";
+--          tx_k_data <= x"F";
+--        when x"2" =>
+--          tx_data <= tx_data_fixed;
+--          tx_k_data <= tx_k_data_fixed;
+--        when others =>
+--          tx_data <= x"BCBCBCBC";
+--          tx_k_data <= x"F";
+--      end case;
+--    end if;
+--  end process data_proc;
 end architecture behavioral;
