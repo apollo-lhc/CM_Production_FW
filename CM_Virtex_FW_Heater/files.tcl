@@ -8,7 +8,7 @@ set bd_files "\
 
 set vhdl_files "\
      ../CM_Common_FW/heater/lut_oscilator.vhd \
-     ../CM_Common_FW/heater/heater/heater.vhd \
+     ../CM_Common_FW/heater/heater.vhd \
      src/top.vhd \
      ../CM_Common_FW/misc/pass_time_domain.vhd \
      ../CM_Common_FW/misc/pacd.vhd \
@@ -40,6 +40,7 @@ set xdc_files "\
 
 set xci_files "\
               cores/Local_Clocking/Local_Clocking.xci \
+              cores/AXI_DRP/AXI_DRP.xci \
               cores/in_system_ibert_0/in_system_ibert_0.xci \
               cores/TCDS_TxRx/TCDS_TxRx.xci  \                             
               "

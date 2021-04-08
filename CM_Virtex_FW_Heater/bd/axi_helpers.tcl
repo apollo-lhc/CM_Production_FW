@@ -26,7 +26,8 @@ proc BUILD_AXI_INTERCONNECT {name clk rstn axi_masters axi_master_clks axi_maste
     #================================================================================
     #  Create an AXI interconnect
     #================================================================================    
-    create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 $AXI_INTERCONNECT_NAME
+#    create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 $AXI_INTERCONNECT_NAME
+    create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 $AXI_INTERCONNECT_NAME
         
     #connect this interconnect clock and reset signals (do quiet incase the type of the signal is different)
     connect_bd_net -q [get_bd_pins  $clk]   [get_bd_pins $AXI_INTERCONNECT_NAME/ACLK]
@@ -49,10 +50,10 @@ proc BUILD_AXI_INTERCONNECT {name clk rstn axi_masters axi_master_clks axi_maste
 	puts "Setting up interconnect slave interface for $slaveM"
 	
 	# Connect the interconnect's slave and master clocks to the processor system's axi master clock (FCLK_CLK0)
-	connect_bd_net [get_bd_pins $slaveC] [get_bd_pins $AXI_INTERCONNECT_NAME/S${slaveID}_ACLK]
+#	connect_bd_net [get_bd_pins $slaveC] [get_bd_pins $AXI_INTERCONNECT_NAME/S${slaveID}_ACLK]
 
 	# Connect resets
-	connect_bd_net [get_bd_pins $slaveR] [get_bd_pins $AXI_INTERCONNECT_NAME/S${slaveID}_ARESETN]
+#	connect_bd_net [get_bd_pins $slaveR] [get_bd_pins $AXI_INTERCONNECT_NAME/S${slaveID}_ARESETN]
 
 	#connect up this interconnect's slave interface to the master $iSlave driving it
 	connect_bd_intf_net [get_bd_intf_pins $slaveM] -boundary_type upper [get_bd_intf_pins $AXI_INTERCONNECT_NAME/S${slaveID}_AXI]
@@ -138,8 +139,8 @@ proc AXI_PL_DEV_CONNECT {device_name axi_interconnect axi_clk axi_rstn axi_freq 
     set_property CONFIG.ASSOCIATED_RESET $axi_rstn  [get_bd_ports $axi_clk]
 
     #connect AXI clk/reest ports to AXI interconnect master
-    connect_bd_net [get_bd_ports $axi_clk]      [get_bd_pins $AXIM_CLK_NAME]
-    connect_bd_net [get_bd_ports $axi_rstn]     [get_bd_pins $AXIM_RSTN_NAME]
+#    connect_bd_net [get_bd_ports $axi_clk]      [get_bd_pins $AXIM_CLK_NAME]
+#    connect_bd_net [get_bd_ports $axi_rstn]     [get_bd_pins $AXIM_RSTN_NAME]
 
 
     #set bus properties
@@ -188,8 +189,8 @@ proc AXI_CONNECT {device_name axi_interconnect axi_clk axi_rstn axi_freq {addr_o
     append AXIM_RSTN_NAME "_ARESETN"
     
     #connect the requested clock to the AXI interconnect clock port
-    connect_bd_net [get_bd_pins $axi_clk]   [get_bd_pins ${AXIM_CLK_NAME}]
-    connect_bd_net [get_bd_pins $axi_rstn]  [get_bd_pins ${AXIM_RSTN_NAME}]
+#    connect_bd_net [get_bd_pins $axi_clk]   [get_bd_pins ${AXIM_CLK_NAME}]
+#    connect_bd_net [get_bd_pins $axi_rstn]  [get_bd_pins ${AXIM_RSTN_NAME}]
 
     
     #Xilinx AXI slaves use different names for the AXI connection, this if/else tree will try to find the correct one. 
@@ -294,8 +295,8 @@ proc AXI_LITE_DEV_CONNECT {device_name axi_interconnect axi_clk axi_rstn axi_fre
     append AXIM_RSTN_NAME "_ARESETN"
     
     #connect the requested clock to the AXI interconnect clock port 
-    connect_bd_net [get_bd_pins $axi_clk]   [get_bd_pins ${AXIM_CLK_NAME}]
-    connect_bd_net [get_bd_pins $axi_rstn]  [get_bd_pins ${AXIM_RSTN_NAME}]
+    # connect_bd_net [get_bd_pins $axi_clk]   [get_bd_pins ${AXIM_CLK_NAME}]
+    # connect_bd_net [get_bd_pins $axi_rstn]  [get_bd_pins ${AXIM_RSTN_NAME}]
 
 
     #Xilinx AXI slaves use different names for the AXI connection, this if/else tree will try to find the correct one. 
@@ -361,8 +362,8 @@ proc AXI_CTL_DEV_CONNECT {device_name axi_interconnect axi_clk axi_rstn axi_freq
     append AXIM_RSTN_NAME "_ARESETN"
     
     #connect the requested clock to the AXI interconnect clock port 
-    connect_bd_net [get_bd_pins $axi_clk]   [get_bd_pins ${AXIM_CLK_NAME}]
-    connect_bd_net [get_bd_pins $axi_rstn]  [get_bd_pins ${AXIM_RSTN_NAME}]
+    # connect_bd_net [get_bd_pins $axi_clk]   [get_bd_pins ${AXIM_CLK_NAME}]
+    # connect_bd_net [get_bd_pins $axi_rstn]  [get_bd_pins ${AXIM_RSTN_NAME}]
 
 
     #Xilinx AXI slaves use different names for the AXI connection, this if/else tree will try to find the correct one. 
